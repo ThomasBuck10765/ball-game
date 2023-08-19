@@ -1,8 +1,8 @@
 import { Component } from 'react';
+import BackButton from '../general/backButton';
 import { HighScoresProps } from '../../types/high-scores/highScores';
-import { BackButton } from '../general/backButton';
 
-export class HighScores extends Component<HighScoresProps> {
+export default class HighScores extends Component<HighScoresProps> {
     
 
     render() {

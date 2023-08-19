@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { BackButtonProps } from '../../types/general/backButton'
 import { appStates } from '../../enums/appStates'
 
-export class BackButton extends Component<BackButtonProps> {
+export default class BackButton extends Component<BackButtonProps> {
 
     render () {
         return (

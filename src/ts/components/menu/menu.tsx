@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { MenuProps } from '../../types/menu/menu';
 import { appStates } from '../../enums/appStates';
 
-export class Menu extends Component<MenuProps> {
+export default class Menu extends Component<MenuProps> {
     
     // TODO: Make the background interesting here, have blue and green balls flying about randomly
     render() {

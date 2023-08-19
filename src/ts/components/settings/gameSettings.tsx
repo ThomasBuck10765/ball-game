@@ -1,8 +1,8 @@
 import { Component } from 'react';
+import BackButton from '../general/backButton';
 import { GameSettingsProps } from '../../types/settings/gameSettings';
-import { BackButton } from '../general/backButton';
 
-export class GameSettings extends Component<GameSettingsProps> {
+export default class GameSettings extends Component<GameSettingsProps> {
     
 
     render() {

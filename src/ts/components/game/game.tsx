@@ -7,8 +7,10 @@ import { BallValues } from '../../values/ballValues';
 import { GameValues } from '../../values/gameValues';
 import { getRandomInt } from '../../helpers/randomNumbers';
 import { areBallsInContact } from '../../helpers/ballsInContact';
+import BackButton from '../general/backButton';
+import { appStates } from '../../enums/appStates';
 
-function Game() {
+function Game(stateProps: any) {
 	// Game setup
 	const refreshRate = GameValues.refreshRate; // in ms
 
@@ -174,18 +176,18 @@ function Game() {
 				SpawnEnemyBall(enemyBalls, setEnemyBalls, enemyBallRadius);
 			}
 
-			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component. Would eventually extend this to have a menu, high scores, etc so that will need doing eventually either way
+			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component, which likely needs doing anyway
 			if (lives <= 0) {
-				window.location.reload();
+				stateProps.setState(appStates.Menu);
 			}
 
 		}, refreshRate);
 		return () => clearInterval(timer);
-	}, [time, refreshRate, pointBalls, pointBallRadius, enemyBalls, enemyBallRadius, lives]);
+	}, [time, refreshRate, pointBalls, pointBallRadius, enemyBalls, enemyBallRadius, lives, stateProps]);
 
 	return (
 		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0}>
-			
+			<BackButton setState={stateProps.setState} baseClass='ball-game'></BackButton>
 
 			<GameInfo score={score} time={time} lives={lives}></GameInfo>
 
@@ -214,7 +216,7 @@ function SpawnPointBall(pointBalls: any, setPointBalls: any, pointBallRadius: nu
 	]))
 }
 
-function SpawnEnemyBall(enemyBalls: any, setEnemyBalls: any, enemyBallRadius: number, enemyBallSpawnTimeout: number = GameValues.enemyBallSpawnTimeout) {
+function SpawnEnemyBall(enemyBalls: any, setEnemyBalls: any, enemyBallRadius: number) {
 	// Spawn in a new enemy ball
 	setEnemyBalls(enemyBalls.concat([
 		{

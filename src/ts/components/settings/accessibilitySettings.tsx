@@ -1,8 +1,8 @@
 import { Component } from 'react';
+import BackButton from '../general/backButton';
 import { AccessibilitySettingsProps } from '../../types/settings/accessibilitySettings';
-import { BackButton } from '../general/backButton';
 
-export class AccessibilitySettings extends Component<AccessibilitySettingsProps> {
+export default class AccessibilitySettings extends Component<AccessibilitySettingsProps> {
     
 
     render() {
