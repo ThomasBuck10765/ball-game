@@ -127,7 +127,7 @@ export default class GameSettings extends Component<GameSettingsProps> {
                 <BackButton setState={this.props.setState} baseClass='settings-menu'></BackButton>
 
                 <div className='settings-menu__game-items-container'>
-                    <span>Game settings can be changed here. Changes are saved automatically. TODO: Note that making any changes here will prevent you from saving/submitting high scores </span>
+                    <span>Game settings can be changed here. Changes are saved automatically. Game settings are reset on page refresh/reload. Note that making any changes here will prevent you from saving/submitting high scores.</span>
 
                     <br /> <br />
 

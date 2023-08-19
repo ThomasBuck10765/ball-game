@@ -16,6 +16,7 @@ export class EnemyBall extends Component<EnemyBallProps> {
     }
 
     componentDidMount(): void {
+        // TODO: Since the enemy balls can be clumped together, should they start moving at random after a period of time? Should some always be moving at random?
         if (this.props.isMoving) {
             const enemySpeed = this.props.speed;
 

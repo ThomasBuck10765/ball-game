@@ -11,7 +11,7 @@ export default class BackButton extends Component<BackButtonProps> {
 
         // TODO: Or not in enum
         this.previousState = (props.previousState === undefined) ?
-            appStates.Menu :
+            appStates.MainMenu :
             props.previousState
     }
 

@@ -12,6 +12,12 @@ $base-class: high-score;
             }
         }
 
+        .#{$base-class}__description-container {
+            .#{$base-class}__description {
+                
+            }
+        }
+
         .#{$base-class}__entries-container {
             .#{$base-class}__entry {
 

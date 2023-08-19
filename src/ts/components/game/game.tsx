@@ -116,7 +116,7 @@ function Game(stateProps: any) {
 				return !ballsToDelete.includes(ball);
 			}));
 
-			// Ensure there are the minimum number of point balls. 
+			// Ensure there are the minimum number of point balls
 			EnsureMinimumPointBalls(pointBalls, setPointBalls, gameValues, ballValues);
 		}
 	}, [playerLeft, playerTop, pointBalls, score, time, gameValues, ballValues]);
@@ -162,17 +162,22 @@ function Game(stateProps: any) {
 
 			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component, which likely needs doing anyway
 			if (lives <= 0) {
-				// Use hasEditedValues to determine whether to save scores
+				if (!hasEditedValues) {
+					const username=stateProps.username;
+					// From here, submit an API call to save the new high score
+					console.log(username);
+				}
+
 				stateProps.setState(appStates.LossScreen);
 			}
 
 		}, gameValues.refreshRate);
 
-		// Ensure there are the minimum number of point balls.
+		// Ensure there are the minimum number of point balls
 		EnsureMinimumPointBalls(pointBalls, setPointBalls, gameValues, ballValues)
 
 		return () => clearInterval(timer);
-	}, [time, pointBalls, enemyBalls, lives, gameValues, ballValues, stateProps]);
+	}, [time, pointBalls, enemyBalls, lives, hasEditedValues, gameValues, ballValues, stateProps]);
 
 	return (
 		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0}>

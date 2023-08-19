@@ -6,6 +6,7 @@ import BackButton from '../general/backButton';
 export default class GameSelection extends Component<MainMenuProps> {
 
     // TODO: Make the background interesting here, have blue and green balls flying about randomly
+    // TODO: Update the class names here
     render() {
         return (
             <Fragment>
