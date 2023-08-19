@@ -1,8 +1,8 @@
-import { BallProps } from '../../types/ball/ball.tsx';
+import { BallProps } from '../../../types/game/ball/ball.tsx';
 import { Ball } from './ball.tsx';
-import { getRandomNumber } from '../../helpers/randomNumbers.tsx';
-import { GameValues } from '../../values/gameValues.tsx';
-import { BallValues } from '../../values/ballValues.tsx';
+import { getRandomNumber } from '../../../helpers/randomNumbers.tsx';
+import { GameValues } from '../../../values/gameValues.tsx';
+import { BallValues } from '../../../values/ballValues.tsx';
 
 const pointBallSpeed = BallValues.pointBallSpeed;
 

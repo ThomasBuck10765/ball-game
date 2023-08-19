@@ -1,5 +1,5 @@
 import React, {CSSProperties, Component} from 'react';
-import { BallProps } from '../../types/ball/ball.tsx';
+import { BallProps } from '../../../types/game/ball/ball.tsx';
 
 
 export class Ball extends Component<BallProps> {

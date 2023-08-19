@@ -1,6 +1,6 @@
 # Ball Game
 
-Basic ball game built in React using TypeScript.
+Basic ball game built in React 18 using TypeScript 4.
 
 You play as the white ball, your goal is to collect as many green and blue balls as possible, while avoiding the red balls.
 
@@ -8,11 +8,21 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Development Notes
 
-Uses Node v14.20.0
-
 ### TODO
 
-lots
+- Main Menu
+  - Menu for different game modes:
+    - One life
+    - Endless (no red balls)
+    - Survival? (play as a blue/green ball and survive a white ball)
+  - High score menu
+    - Save scores locally
+    - Extend to having these in a database
+- Work out what's needed from the create-react-app bootstrap and delete everything else
+- Tests ?
+- Publish to an Azure site
+- TODOs written throughout code
+- Mark repo as Public on github with a link to the site's game
 
 ## Available Scripts
 

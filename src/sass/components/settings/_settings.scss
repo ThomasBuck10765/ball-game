@@ -1,0 +1,15 @@
+$base-class: settings-menu;
+
+.#{$base-class} {
+    @include back-button;
+
+    // Styling for the game settings
+    .#{$base-class}__game-items-container {
+
+    }
+
+    // Styling for the accessibility settings
+    .#{$base-class}__accessibility-items-container {
+
+    }
+}

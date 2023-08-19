@@ -1,0 +1,22 @@
+$base-class: main-menu;
+
+.#{$base-class} {
+    display: flex;
+    font-size: 30px;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    .#{$base-class}__items-container {
+        background-color: $grey;
+        border-radius: 14px;
+        text-align: center;
+        padding: 20px;
+        
+        > div {
+            &:not(:last-child) {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}

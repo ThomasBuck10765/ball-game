@@ -9,8 +9,15 @@
 @import "utils/mixins";
 
 // Components
-@import "components/ball/ball";
-@import "components/game-info/game-info";
+@import "components/menu/menu";
+
+@import "components/high-scores/high-scores";
+
+@import "components/settings/settings";
+
+// Game components
+@import "components/game/ball/ball";
+@import "components/game/game-info";
 
 // Pages
 @import "pages/page";

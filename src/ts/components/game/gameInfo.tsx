@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import { GameInfoProps } from '../../types/gameInfo/gameInfo.tsx';
+import { GameInfoProps } from '../../types/game/gameInfo.tsx';
 
 export class GameInfo extends Component<GameInfoProps> {
     

@@ -1,0 +1,19 @@
+$base-class: high-score;
+
+.#{$base-class} {
+    @include back-button;
+
+    .#{$base-class}__main-container {
+        .#{$base-class}__title-container {
+            .#{$base-class}__title {
+                font-size: 40px;
+            }
+        }
+
+        .#{$base-class}__entries-container {
+            .#{$base-class}__entry {
+
+            }
+        }
+    }
+}

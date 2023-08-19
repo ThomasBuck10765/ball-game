@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { EnemyBallProps } from '../../types/ball/ball.tsx';
-import { GameValues } from '../../values/gameValues.tsx';
-import { BallValues } from '../../values/ballValues.tsx';
+import { EnemyBallProps } from '../../../types/game/ball/ball.tsx';
+import { GameValues } from '../../../values/gameValues.tsx';
+import { BallValues } from '../../../values/ballValues.tsx';
 
 const enemyBallTimeout = GameValues.enemyBallSpawnTimeout;
 
