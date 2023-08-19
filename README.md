@@ -18,6 +18,7 @@ Makes use of the [naughty-words-js](https://github.com/LDNOOBW/naughty-words-js)
   - Menu for different game modes:
     - Survival? (play as a blue/green ball and survive a white ball)
   - High score menu
+    - Rank results / users ?
     - Save scores locally / use caching ?
     - UPDATE SECURITY ROLES ON FIREBASE INSTANCE
 - Work out what's needed from the create-react-app bootstrap and delete everything else

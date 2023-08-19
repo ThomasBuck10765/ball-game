@@ -7,6 +7,8 @@ $base-class: main-menu;
     align-items: center;
     justify-content: center;
 
+    @include back-button;
+
     .#{$base-class}__items-container {
         background-color: $grey;
         border-radius: 14px;

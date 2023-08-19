@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BackButton from '../general/backButton';
 import { HighScoresProps } from '../../types/high-scores/highScores';
 import { HighScoreItemProps } from '../../types/high-scores/highScoreItem';
-import base from '../../firebase/base';
+import base, { authenticate } from '../../firebase/firebase';
 
 export default class HighScores extends Component<HighScoresProps> {
 
@@ -15,24 +15,11 @@ export default class HighScores extends Component<HighScoresProps> {
 
         this.highScoreItems = [];
         this.highScoreItemsOriginal = [];
-
-        // TODO: any way we can limit the results?
-        base.fetch('highScores', {
-            context: this,
-            asArray: true,
-        }).then((data: HighScoreItemProps[]) => {
-            // By default, arrange the data to show the top results first
-            this.highScoreItems = data.sort((a, b) => {
-                return b.score - a.score;
-            });
-            this.highScoreItemsOriginal = {...(this.highScoreItems)};
-        }).catch((error: any) => {
-            this.highScoreItems = [];
-        })
     }
 
     componentDidMount(): void {
-        // TODO: If we do routing, we can sync more specifically here. Don't think we'd want to do that as they're global high scores?
+        this.getHighScoresAsync();
+
         this.ref = base.syncState('highScoreItems', {
             context: this,
             state: 'highScoreItems'
@@ -43,22 +30,36 @@ export default class HighScores extends Component<HighScoresProps> {
         base.removeBinding(this.ref);
     }
 
-    resetDisplayedHighScoreItems() {
-        this.highScoreItems = {...(this.highScoreItemsOriginal)};
+    getHighScoresAsync = async () => {
+        const isAuthenticated = await authenticate();
+
+        if (isAuthenticated) {
+            // TODO: any way we can limit the results?
+            base.fetch('highScores', {
+                context: this,
+                asArray: true,
+            }).then((data: HighScoreItemProps[]) => {
+                // By default, arrange the data to show the top results first
+                this.highScoreItems = data.sort((a, b) => {
+                    return b.score - a.score;
+                });
+                this.highScoreItemsOriginal = (this.highScoreItems);
+                this.forceUpdate();
+            }).catch((error: any) => {
+                console.log(error);
+            })
+        }
+        
     }
 
-    sortHighScoreItems() {
-        this.resetDisplayedHighScoreItems();
-        this.highScoreItems.sort((a, b) => {
-            return b.score - a.score;
-        })
+    filterHighScoresByName = () => {
+        this.highScoreItems = this.highScoreItems.filter((highScore) => highScore.name === this.props.username);
+        this.forceUpdate();
     }
 
-    filterHighScoreItemsByName() {
-        console.log(1);
-        console.log(this.highScoreItems);
-        this.highScoreItems = this.highScoreItems.filter((highScore) => highScore.name === this.props.username)
-        console.log(this.highScoreItems);
+    resetDisplayedHighScores = () => {
+        this.highScoreItems = (this.highScoreItemsOriginal);
+        this.forceUpdate();
     }
 
     renderHighScoreItem = (highScore: HighScoreItemProps, index: number) => {
@@ -83,19 +84,22 @@ export default class HighScores extends Component<HighScoresProps> {
                         <span className="high-score__description">Please note that these are only for the Regular game mode with no altered settings.</span>
                     </div>
 
-                    <div>
-                        <button type='submit'>TODO: Scores matching username {this.props.username}</button>
-                    </div>
-
-                    <div>
-                        <button type='reset'>TODO: Top scores</button>
-                    </div>
-
                     <br />
 
                     {
                         this.highScoreItems.length > 0 ?
-                            this.highScoreItems.map((highScore, index) => this.renderHighScoreItem(highScore, index))
+                            <React.Fragment>
+                                <div>
+                                    <button type='submit' onClick={this.filterHighScoresByName}>Filter scores to username {this.props.username}</button>
+                                </div>
+
+                                <div>
+                                    <button type='reset' onClick={this.resetDisplayedHighScores}>Top scores</button>
+                                </div>
+
+                                <br />
+                                {this.highScoreItems.map((highScore, index) => this.renderHighScoreItem(highScore, index))}
+                            </React.Fragment>
                             : <div>Sorry, the high scores aren't available at the moment -please try again later.</div>
                     }
                 </div>

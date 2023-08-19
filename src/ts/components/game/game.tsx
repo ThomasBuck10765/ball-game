@@ -11,8 +11,8 @@ import { GameValuesType } from '../../types/values/gameValues';
 import { BallValuesType } from '../../types/values/ballValues';
 import { GameValues } from '../../values/gameValues';
 import { BallValues } from '../../values/ballValues';
-import { BaseBallProps, EnemyBallType, PointBallType } from '../../types/game/ball/ball';
-import base from '../../firebase/base';
+import { EnemyBallType, PointBallType } from '../../types/game/ball/ball';
+import base, { authenticate } from '../../firebase/firebase';
 import { HighScoreItemProps } from '../../types/high-scores/highScoreItem';
 
 let pointBallId = 1;
@@ -168,7 +168,9 @@ function Game(stateProps: any) {
 			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component, which likely needs doing anyway
 			if (lives <= 0) {
 				if (!hasEditedValues) {
-					const username=stateProps.username;
+					// const isAuthenticated = await authenticate();
+					const username = stateProps.username;
+
 					// From here, submit an API call to save the new high score
 					let highScoreItem: HighScoreItemProps = {
 						name: username,
@@ -176,10 +178,12 @@ function Game(stateProps: any) {
 						time: time,
 						dateSubmitted: new Date().toLocaleDateString("en-GB")
 					}
-					// TODO: Then do swap the state
-					base.push('highScores', {
-						data: highScoreItem
-					});
+					// if (isAuthenticated) {
+						// TODO: Then do swap the state
+						base.push('highScores', {
+							data: highScoreItem
+						});
+					// }
 				}
 
 				stateProps.setState(appStates.LossScreen);

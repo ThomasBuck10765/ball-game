@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@types/re-base": "^3.2.1",
     "sass": "^1.63.4"
   }
 }
