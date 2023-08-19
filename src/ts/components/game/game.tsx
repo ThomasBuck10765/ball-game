@@ -91,14 +91,28 @@ function Game(stateProps: any) {
 				}
 
 				break;
-
-			case "Escape":
-				// TODO: Something? Open menu to quit?
-				break;
 			default:
 				break;
 		}
 	};
+
+	const setPlayerWithinBounds = (x: number, y: number, maxLeft: number, maxTop: number) => {
+		if (x < playerRadius) {
+			setPlayerLeft(playerRadius);
+		}
+		else {
+			setPlayerLeft(Math.min(x, maxTop));
+		}
+
+		if (y < playerRadius) {
+			setPlayerTop(playerRadius);
+		}
+		else {
+			setPlayerTop(Math.min(y, maxTop));
+		}
+
+		return;
+	}
 
 	// Player movement (mobile only)
 	const clickEvent = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -107,44 +121,28 @@ function Game(stateProps: any) {
 			let maxLeft = window.innerWidth - playerRadius;
 			let maxTop = window.innerHeight - playerRadius;
 
-			//playerSpeed
-			// This was borrowed from enemyBall.tsx, TODO: find a way to use common functions
-			let x = playerLeft;
-			let y = playerTop;
-
 			let clickX = event.clientX;
 			let clickY = event.clientY;
 
-			let angle = Math.atan((clickX - x) / (clickY - y));
+			// If tap is closer than distance of speed, go there
+			if ((clickX - playerLeft)**2 + (clickY - playerTop)**2 < playerSpeed**2) {
+				setPlayerWithinBounds(clickX, clickY, maxLeft, maxTop);
 
+				return;
+			}
+
+			let angle = Math.atan((clickX - playerLeft) / (clickY - playerTop));
+		
 			let displaceLeft = playerSpeed * Math.sin(angle);
 			let displaceTop = playerSpeed * Math.cos(angle);
 
 			// Phase inversion due to domain of Math.atan (-π/2, π/2)
-			if (clickY < y) {
+			if (clickY < playerTop) {
 				displaceLeft = -displaceLeft;
 				displaceTop = -displaceTop;
 			}
-			
-			if (playerLeft + displaceLeft < playerRadius) {
-				setPlayerLeft(playerRadius);
-			}
-			else if (playerLeft + displaceLeft > maxLeft) {
-				setPlayerLeft(maxLeft);
-			}
-			else {
-				setPlayerLeft(playerLeft + displaceLeft);
-			}
 
-			if (playerTop + displaceTop < playerRadius) {
-				setPlayerTop(playerRadius);
-			}
-			else if (playerTop + displaceTop > maxTop) {
-				setPlayerTop(maxTop);
-			}
-			else {
-				setPlayerTop(playerTop + displaceTop);
-			}
+			setPlayerWithinBounds((playerLeft + displaceLeft), (playerTop + displaceTop), maxLeft, maxTop);
 		}
 	}
 
@@ -194,45 +192,52 @@ function Game(stateProps: any) {
 		}
 	}, [playerRadius, playerLeft, playerTop, enemyBalls, enemyBallRadius, lives, time]);
 
-	// Starts a timer on app load which enforces a refresh rate of 60 fps
 	// Sets up spawning of point and enemy balls
-	// Deals with dying
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setTime(time + (gameValues.refreshRate / 1000));
-
 			// Spawn in a new point ball
 			if ((Math.round(time * 100) / 100) % gameValues.pointBallSpawnRate === 0) {
 				SpawnPointBall(pointBalls, setPointBalls, gameValues, ballValues);
 			}
 
-			// Spawn in a new enemy ball
-			if (enemyBalls.length < gameValues.maximumNumberOfEnemyBalls && (Math.round(time * 100) / 100) % gameValues.enemyBallSpawnRate === 0) {
-				SpawnEnemyBall(enemyBalls, setEnemyBalls, ballValues.enemyBallRadius);
-			}
-
-			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component, which likely needs doing anyway
-			if (lives <= 0 && score > 0) {
-				if (!hasEditedValues) {
-					// From here, submit an API call to save the new high score
-					submitScore({
-						name: stateProps.username,
-						score: score,
-						time: time,
-						dateSubmitted: new Date().toLocaleDateString("en-GB")
-					})
-				}
-
-				stateProps.setState(appStates.LossScreen);
+			// Spawn in a new enemy ball, ensure one spawns at beginning
+			if ((enemyBalls.length < gameValues.maximumNumberOfEnemyBalls && (Math.round(time * 100) / 100) % gameValues.enemyBallSpawnRate === 0) || time === gameValues.refreshRate / 1000) {
+				SpawnEnemyBall(enemyBalls, setEnemyBalls, ballValues.enemyBallRadius, [playerLeft, playerTop], playerRadius);
 			}
 
 		}, gameValues.refreshRate);
 
 		// Ensure there are the minimum number of point balls
-		EnsureMinimumPointBalls(pointBalls, setPointBalls, gameValues, ballValues)
+		EnsureMinimumPointBalls(pointBalls, setPointBalls, gameValues, ballValues);
 
 		return () => clearInterval(timer);
-	}, [time, score, pointBalls, enemyBalls, lives, hasEditedValues, gameValues, ballValues, stateProps]);
+	}, [playerRadius,  playerLeft, playerTop, pointBalls, enemyBalls, ballValues, gameValues, time])
+
+	// Deals with dying
+	useEffect(() => {
+		if (lives <= 0 && score > 0) {
+			if (!hasEditedValues) {
+				// From here, submit an API call to save the new high score
+				submitScore({
+					name: stateProps.username,
+					score: score,
+					time: time,
+					dateSubmitted: new Date().toLocaleDateString("en-GB")
+				})
+			}
+
+			stateProps.setState(appStates.LossScreen);
+		}
+	});
+
+	// Starts a timer on app load which enforces a refresh rate of 60 fps (default)
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setTime(time + (gameValues.refreshRate / 1000));
+		}, gameValues.refreshRate);
+
+		return () => clearInterval(timer);
+	}, [time, gameValues]);
 
 	return (
 		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0} onClick={clickEvent}>
@@ -278,20 +283,27 @@ function SpawnPointBall(pointBalls: PointBallType[], setPointBalls: any, gameVal
 			id: pointBallId++,
 			radius: ballValues.pointBallRadius,
 			coordinates: [getRandomInt(0, window.innerWidth - ballValues.pointBallRadius), getRandomInt(0, window.innerHeight - ballValues.pointBallRadius)],
-			color: Math.round(Math.random()) ? 'green' : 'blue',
+			color: Math.round(Math.random()) ? 'green' : 'blue'
 		}
 	))
 
 	return pointBallId;
 }
 
-function SpawnEnemyBall(enemyBalls: EnemyBallType[], setEnemyBalls: any, enemyBallRadius: number) {
+function SpawnEnemyBall(enemyBalls: EnemyBallType[], setEnemyBalls: any, enemyBallRadius: number, playerCoordinates: number[], playerRadius: number) {
+
+	// Ensure enemy ball cannot spawn on player
+	let coordinates: number[] = [getRandomInt(0, window.innerWidth - enemyBallRadius), getRandomInt(0, window.innerHeight - enemyBallRadius)];
+	while (areBallsInContact(playerCoordinates, coordinates, playerRadius + enemyBallRadius)) {
+		coordinates = [getRandomInt(0, window.innerWidth - enemyBallRadius), getRandomInt(0, window.innerHeight - enemyBallRadius)];
+	}
+
 	// Spawn in a new enemy ball
 	setEnemyBalls(enemyBalls.concat([
 		{
 			id: enemyBallId++,
 			radius: enemyBallRadius,
-			coordinates: [getRandomInt(0, window.innerWidth - enemyBallRadius), getRandomInt(0, window.innerHeight - enemyBallRadius)],
+			coordinates: coordinates
 		}
 	]));
 

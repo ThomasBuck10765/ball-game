@@ -4,7 +4,7 @@ $base-class: high-score;
     @include back-button;
 
     .#{$base-class}__main-container {
-        padding-top: 20px;
+        padding-top: $back-button-spacing;
         text-align: center;
 
         .#{$base-class}__title-container {
