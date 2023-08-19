@@ -1,4 +1,4 @@
-.score-container {
+.game-info-container {
     background-color: #303030;
     color: $off-white;
     display: flex;
@@ -16,5 +16,19 @@
 
     .score {
 
+    }
+
+    .lives {
+        &.__3 {
+            color: $green;
+        }
+
+        &.__2 {
+            color: $orange;
+        }
+
+        &.__1 {
+            color: $red;
+        }
     }
 }

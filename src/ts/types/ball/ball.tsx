@@ -3,3 +3,9 @@ export type BallProps = {
     coordinates: number[],
     color?: string,
 };
+
+export type EnemyBallProps = {
+    radius: number,
+    coordinates: number[],
+    playerCoordinates: number[]
+};

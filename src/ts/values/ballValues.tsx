@@ -1,4 +1,4 @@
-const playerSpeed = 15;
+const playerSpeed = 25;
 
 export const BallValues = {
     playerRadius: 25,
@@ -7,6 +7,6 @@ export const BallValues = {
 
     // Movement speed, etc
     playerSpeed: playerSpeed,
-    pointBallSpeed: 5,
-    enemySpeed: playerSpeed / 2,
+    pointBallSpeed: playerSpeed / 5,
+    enemyBallSpeed: playerSpeed / 50, 
 }
