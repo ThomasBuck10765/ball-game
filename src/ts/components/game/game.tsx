@@ -201,7 +201,7 @@ function Game(stateProps: any) {
 			}
 
 			// Spawn in a new enemy ball, ensure one spawns at beginning
-			if ((enemyBalls.length < gameValues.maximumNumberOfEnemyBalls && (Math.round(time * 100) / 100) % gameValues.enemyBallSpawnRate === 0) || time === gameValues.refreshRate / 1000) {
+			if (enemyBalls.length < gameValues.maximumNumberOfEnemyBalls && ((Math.round(time * 100) / 100) % gameValues.enemyBallSpawnRate === 0 || time === gameValues.refreshRate / 1000)) {
 				SpawnEnemyBall(enemyBalls, setEnemyBalls, ballValues.enemyBallRadius, [playerLeft, playerTop], playerRadius);
 			}
 

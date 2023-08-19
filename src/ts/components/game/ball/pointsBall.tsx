@@ -4,9 +4,11 @@ import { getRandomNumber } from '../../../helpers/randomNumbers.tsx';
 
 export class PointsBall extends Ball {
     color: string;
+
+    sqrtSpeed: number = Math.sqrt(this.props.speed);
     
-    xSpeed: number = getRandomNumber(-this.props.speed, this.props.speed, true);
-    ySpeed: number = getRandomNumber(-this.props.speed, this.props.speed, true);
+    xSpeed: number = getRandomNumber(-this.sqrtSpeed, this.sqrtSpeed, true);
+    ySpeed: number = getRandomNumber(-this.sqrtSpeed, this.sqrtSpeed, true);
 
     timer?: NodeJS.Timer;
 

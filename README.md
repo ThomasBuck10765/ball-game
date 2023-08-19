@@ -19,7 +19,6 @@ Makes use of the [naughty-words-js](https://github.com/LDNOOBW/naughty-words-js)
   - Deletes the cookie after session ?
 - Game
   - Seems to be some issue with the timer on the actual site?
-  - MOBILE CONTROLS
 - Main Menu
   - Menu for different game modes:
     - Survival? (play as a blue/green ball and survive a white ball)
