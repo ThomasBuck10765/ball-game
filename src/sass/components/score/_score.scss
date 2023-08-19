@@ -1,0 +1,20 @@
+.score-container {
+    background-color: #303030;
+    color: $off-white;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    padding: 0px 10px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 1;
+
+    .time {
+
+    }
+
+    .score {
+
+    }
+}

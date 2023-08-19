@@ -1,0 +1,20 @@
+/// <reference include="../../utils/_variables.scss">
+
+.ball {
+    border-radius: 50%;
+    position: absolute;
+    height: 10px;
+    width: 10px;
+
+    &.player {
+        background-color: $white;
+        height: 50px;
+        width: 50px;
+    }
+
+    &.enemy {
+        background-color: $red;
+        height: 20px;
+        width: 20px;
+    }
+}

@@ -1,6 +1,18 @@
-# Getting Started with Create React App
+# Ball Game
+
+Basic ball game built in React using TypeScript.
+
+You play as the white ball, your goal is to collect as many green and blue balls as possible, while avoiding the red balls.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Development Notes
+
+Uses Node v14.20.0
+
+### TODO
+
+lol, everything
 
 ## Available Scripts
 
