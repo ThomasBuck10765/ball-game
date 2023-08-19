@@ -58,6 +58,7 @@ function App() {
 		switch(event.code) {
 			case "ArrowRight":
 			case "KeyD":
+			case "Numpad6":
 				if (playerLeft + playerSpeed <= maxLeft + playerRadius) {
 					setPlayerLeft(playerLeft + playerSpeed);
 				} else {
@@ -67,6 +68,7 @@ function App() {
 				break;
 			case "ArrowLeft":
 			case "KeyA":
+			case "Numpad4":
 				if (playerLeft - playerSpeed >= playerRadius) {
 					setPlayerLeft(playerLeft - playerSpeed);
 				} else {
@@ -76,6 +78,7 @@ function App() {
 				break;
 			case "ArrowUp":
 			case "KeyW":
+			case "Numpad8":
 				if (playerTop - playerSpeed >= playerRadius) {
 					setPlayerTop(playerTop - playerSpeed);
 				} else {
@@ -85,6 +88,7 @@ function App() {
 				break;
 			case "ArrowDown":
 			case "KeyS":
+			case "Numpad2":
 				if (playerTop + playerSpeed <= maxTop + playerRadius) {
 					setPlayerTop(playerTop + playerSpeed);
 				} else {
