@@ -4,6 +4,7 @@ import { BallProps } from '../../types/ball/ball.tsx';
 
 export class Ball extends Component<BallProps> {
     style: CSSProperties
+    color?: string
 
     constructor(props: BallProps) {
         super(props);
@@ -13,8 +14,9 @@ export class Ball extends Component<BallProps> {
             width: 2 * props.radius,
         };
 
-        if (this.props.color !== undefined) {
+        if (props.color !== undefined) {
             this.style.backgroundColor = props.color;       
+            this.color = props.color;
         }
     }    
 

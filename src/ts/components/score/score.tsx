@@ -6,7 +6,7 @@ export class Score extends Component<ScoreProps> {
     render() {
         return (
             <div className='score-container'>
-                <div className='time'>{this.props.time} s</div>
+                <div className='time'>{Math.floor(this.props.time)} s</div>
                 <div className='score'>{this.props.score}</div>
             </div>
         );
