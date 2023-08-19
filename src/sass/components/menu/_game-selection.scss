@@ -1,0 +1,5 @@
+$base-class: game-selection;
+
+.#{$base-class} {
+    @include back-button;
+}

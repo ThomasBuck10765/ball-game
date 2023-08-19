@@ -4,7 +4,7 @@ import { BallProps } from '../../../types/game/ball/ball.tsx';
 export class Ball extends Component<BallProps> {
     style: CSSProperties
     color?: string
-
+    // TODO: Refactor how styling works
     constructor(props: BallProps) {
         super(props);
 

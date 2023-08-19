@@ -9,6 +9,9 @@
 @import "utils/mixins";
 
 // Components
+@import "components/back-button/back-button";
+
+@import "components/menu/game-selection";
 @import "components/menu/menu";
 
 @import "components/high-scores/high-scores";

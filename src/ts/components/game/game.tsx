@@ -7,12 +7,18 @@ import { EnemyBall } from './ball/enemyBall';
 import { getRandomInt } from '../../helpers/randomNumbers';
 import { areBallsInContact } from '../../helpers/ballsInContact';
 import appStates from '../../enums/appStates';
+import { GameValuesType } from '../../types/values/gameValues';
+import { BallValuesType } from '../../types/values/ballValues';
+import { GameValues } from '../../values/gameValues';
+import { BallValues } from '../../values/ballValues';
 
 function Game(stateProps: any) {
 	// Game setup
 
-	let gameValues = stateProps.gameValues;
-	let ballValues = stateProps.ballValues;	
+	let gameValues: GameValuesType = stateProps.gameValues;
+	let ballValues: BallValuesType = stateProps.ballValues;	
+
+	const hasEditedValues = (JSON.stringify(gameValues) !== JSON.stringify(GameValues) || JSON.stringify(ballValues) !== JSON.stringify(BallValues));
 
 	const refreshRate = gameValues.refreshRate; // in ms
 
@@ -20,7 +26,7 @@ function Game(stateProps: any) {
 	const [playerLeft, setPlayerLeft] = useState(250);
 	const [playerTop, setPlayerTop] = useState(250);
 	const playerSpeed = ballValues.playerSpeed;
-	const playerRadius = gameValues.playerRadius;
+	const playerRadius = ballValues.playerRadius;
 
 	const [score, setScore] = useState(0);
 	const [time, setTime] = useState(0);
@@ -101,10 +107,10 @@ function Game(stateProps: any) {
 				break;
 
 			case "Escape":
-				
+				// TODO: Something? Open menu to quit?
 				break;
 			default:
-				console.log(`Key press: ${event.code}`);
+				break;
 		}
 	};
 
@@ -178,6 +184,7 @@ function Game(stateProps: any) {
 
 			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component, which likely needs doing anyway
 			if (lives <= 0) {
+				// Use hasEditedValues to determine whether to save scores
 				stateProps.setState(appStates.LossScreen);
 			}
 

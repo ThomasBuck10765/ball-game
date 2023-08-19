@@ -11,7 +11,7 @@ export default class AccessibilitySettings extends Component<AccessibilitySettin
                 <BackButton setState={this.props.setState} baseClass='settings-menu'></BackButton>
 
                 <div className='settings-menu__accessibility-items-container'>
-                    TODO
+                    
                 </div>
             </div>
         );

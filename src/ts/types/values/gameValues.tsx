@@ -1,8 +1,6 @@
 export type GameValuesType = {
     refreshRate: number;
 
-    playerSpeed: number;
-    playerRadius: number;
     numberOfStartingLives: number;
 
     pointBallSpawnRate: number;

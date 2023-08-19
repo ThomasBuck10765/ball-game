@@ -63,6 +63,8 @@ export class EnemyBall extends Component<EnemyBallProps> {
     render() {
         return <div className='ball enemy' style={
             {
+                height: 2 * this.props.radius,
+                width: 2 * this.props.radius,
                 left: this.props.coordinates[0] - this.props.radius, 
                 top: this.props.coordinates[1] - this.props.radius, 
                 opacity: (this.props.enemyBallTimeout - this.timeUntilActive) / this.props.enemyBallTimeout}

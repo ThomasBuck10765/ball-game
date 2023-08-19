@@ -1,7 +1,7 @@
 // Back button; designed to be 
 @mixin back-button {
     &__back-container {
-
+        position: fixed;
     }
 
     &__back {

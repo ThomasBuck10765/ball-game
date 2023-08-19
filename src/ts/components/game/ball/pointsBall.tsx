@@ -84,6 +84,13 @@ export class PointsBall extends Ball {
     }
 
     render() {
-        return <div className='ball' style={{left: this.props.coordinates[0] - this.props.radius, top: this.props.coordinates[1] - this.props.radius, backgroundColor: this.color}}></div>
+        return <div className='ball' style={
+            {
+                height: 2 * this.props.radius,
+                width: 2 * this.props.radius,
+                left: this.props.coordinates[0] - this.props.radius,
+                top: this.props.coordinates[1] - this.props.radius,
+                backgroundColor: this.color,
+            }}></div>
     }
 }

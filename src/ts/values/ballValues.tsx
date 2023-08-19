@@ -1,9 +1,9 @@
 import { BallValuesType } from "../types/values/ballValues";
-import { GameValues } from "./gameValues";
 
-const playerSpeed = GameValues.playerSpeed;
+const playerSpeed = 25
 
 export const BallValues: BallValuesType = {
+    playerRadius: 25,
     pointBallRadius: 5,
     enemyBallRadius: 10,
 

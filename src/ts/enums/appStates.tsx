@@ -1,16 +1,16 @@
 enum appStates {
-    Menu = "menu",
+    Menu = "Main Menu",
     
-    GameSelection = "game-selection",
+    GameSelection = "Game Selection",
     
-    Game = "game",
-    LossScreen = "loss-screen",
+    Game = "Game",
+    LossScreen = "Loss Screen",
 
-    HighScores = "high-scores",
+    HighScores = "High Scores",
     
-    Settings = "settings",
+    Settings = "Settings",
     
-    AccessibilityOptions = "accessibility-options"
+    AccessibilityOptions = "Accessibility Options"
 }
 
 export default appStates;

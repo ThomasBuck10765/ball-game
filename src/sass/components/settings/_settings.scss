@@ -5,7 +5,7 @@ $base-class: settings-menu;
 
     // Styling for the game settings
     .#{$base-class}__game-items-container {
-
+        padding-top: 20px;
     }
 
     // Styling for the accessibility settings
