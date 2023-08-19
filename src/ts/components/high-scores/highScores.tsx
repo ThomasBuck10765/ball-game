@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import BackButton from '../general/backButton';
 import { HighScoresProps } from '../../types/high-scores/highScores';
 import { HighScoreItemProps } from '../../types/high-scores/highScoreItem';
@@ -13,18 +13,21 @@ export default class HighScores extends Component<HighScoresProps> {
         // Example data
         this.highScoreItems = [
             {
+                id: 1,
                 score: 10000,
                 dateSubmitted: new Date(),
                 time: 5,
                 name: 'John Doe'
             },
             {
+                id: 2,
                 score: 12000,
                 dateSubmitted: new Date(),
                 time: 15,
                 name: 'John, but better'
             },
             {
+                id: 3,
                 score: 17000,
                 dateSubmitted: new Date(),
                 time: 30,
@@ -41,6 +44,14 @@ export default class HighScores extends Component<HighScoresProps> {
         this.highScoreItems.sort((a, b) => {
             return b.score - a.score;
         })
+    }
+
+    renderHighScoreItem = (highScore: HighScoreItemProps) => {
+        return (
+                <div className='high-score__entries-container' key={highScore.id}>
+                    <div className='high-score__entry'>{highScore.score} points, {highScore.dateSubmitted.toLocaleDateString("en-GB")}, {highScore.time} s, {highScore.name}</div> 
+                </div>
+        )
     }
 
     render() {
@@ -68,11 +79,7 @@ export default class HighScores extends Component<HighScoresProps> {
                     <br />
 
                     {
-                        this.highScoreItems.map(highScore => 
-                            <div className='high-score__entries-container'>
-                                <div className='high-score__entry'>{highScore.score} points, {highScore.dateSubmitted.toLocaleDateString("en-GB")}, {highScore.time} s, {highScore.name}</div> 
-                            </div>
-                        )
+                        this.highScoreItems.map(highScore => this.renderHighScoreItem(highScore))
                     }
                 </div>
             </div>
