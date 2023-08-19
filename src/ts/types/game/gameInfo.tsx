@@ -1,5 +1,6 @@
 export type GameInfoProps = {
     time: number,
     score: number,
-    lives: number
+    lives: number,
+    showLives: boolean
 };

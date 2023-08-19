@@ -12,8 +12,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - Main Menu
   - Menu for different game modes:
-    - One life
-    - Endless (no red balls)
     - Survival? (play as a blue/green ball and survive a white ball)
   - High score menu
     - Save scores locally

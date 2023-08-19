@@ -4,6 +4,8 @@ $base-class: high-score;
     @include back-button;
 
     .#{$base-class}__main-container {
+        padding-top: 20px;
+
         .#{$base-class}__title-container {
             .#{$base-class}__title {
                 font-size: 40px;

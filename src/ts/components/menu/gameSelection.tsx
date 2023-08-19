@@ -13,6 +13,8 @@ export default class GameSelection extends Component<MainMenuProps> {
                 <div className='main-menu'>
                     <div className='main-menu__items-container'>
                         <div className='game-selection__start' onClick={() => this.props.setState(appStates.Game)}>Regular</div>
+                        <div className='game-selection__one-life' onClick={() => this.props.setState(appStates.GameOneLife)}>One Life </div>
+                        <div className='game-selection__endless' onClick={() => this.props.setState(appStates.GameEndless)}>Endless</div>
                         <div className='main-menu__high-scores' onClick={() => this.props.setState(appStates.HighScores)}>High Scores</div>
                     </div>
                 </div>

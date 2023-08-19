@@ -1,4 +1,4 @@
-type BaseBallProps = {
+export type BaseBallProps = {
     radius: number,
     coordinates: number[],
 }

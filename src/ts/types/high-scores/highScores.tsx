@@ -1,3 +1,5 @@
-export type HighScoresProps = {
-    setState: any;
+import { BaseComponentProps } from "../general/baseComponentProps";
+
+export type HighScoresProps = BaseComponentProps & {
+
 }

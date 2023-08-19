@@ -16,6 +16,18 @@ export default function App() {
 	const [ballValues, setBallValues] = useState(BallValues);
 	const [gameValues, setGameValues] = useState(GameValues);
 
+	const renderGameState = () => {
+		switch(state) {
+			case appStates.Game:
+				// return Game(setState);
+				return <Game setState={setState} ballValues={ballValues} gameValues={gameValues}></Game>;
+			case appStates.GameOneLife:
+				return <Game setState={setState} ballValues={ballValues} gameValues={{...(gameValues), ...({numberOfStartingLives: 1})}}></Game>;
+			case appStates.GameEndless:
+				return <Game setState={setState} ballValues={ballValues} gameValues={{...(gameValues), ...({maximumNumberOfEnemyBalls: 0})}}></Game>;
+		}
+	}
+
 	// TODO: Should we be using routing instead?
 	const renderCurrentState = () => {
 		switch(state) {
@@ -24,8 +36,9 @@ export default function App() {
 			case appStates.GameSelection:
 				return <GameSelection setState={setState}></GameSelection>
 			case appStates.Game:
-				// return Game(setState);
-				return <Game setState={setState} ballValues={ballValues} gameValues={gameValues}></Game>;
+			case appStates.GameOneLife:
+			case appStates.GameEndless:
+				return renderGameState();
 			case appStates.LossScreen:
 				return <LossScreen setState={setState}></LossScreen>;
 			case appStates.HighScores:

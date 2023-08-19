@@ -4,6 +4,8 @@ enum appStates {
     GameSelection = "Game Selection",
     
     Game = "Game",
+    GameOneLife = "Game (One Life)",
+    GameEndless = "Game (Endless)",
     LossScreen = "Loss Screen",
 
     HighScores = "High Scores",
