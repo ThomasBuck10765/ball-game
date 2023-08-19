@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import GameInfo from './gameInfo';
+import BackButton from '../general/backButton';
 import { PlayerBall } from './ball/playerBall';
 import { PointsBall } from './ball/pointsBall';
 import { EnemyBall } from './ball/enemyBall';
-import { GameInfo } from './gameInfo';
-import { BallValues } from '../../values/ballValues';
-import { GameValues } from '../../values/gameValues';
 import { getRandomInt } from '../../helpers/randomNumbers';
 import { areBallsInContact } from '../../helpers/ballsInContact';
-import BackButton from '../general/backButton';
-import { appStates } from '../../enums/appStates';
+import appStates from '../../enums/appStates';
 
 function Game(stateProps: any) {
 	// Game setup
-	const refreshRate = GameValues.refreshRate; // in ms
+
+	let gameValues = stateProps.gameValues;
+	let ballValues = stateProps.ballValues;	
+
+	const refreshRate = gameValues.refreshRate; // in ms
 
 	// Player setup
 	const [playerLeft, setPlayerLeft] = useState(250);
 	const [playerTop, setPlayerTop] = useState(250);
-	const playerSpeed = BallValues.playerSpeed;
-	const playerRadius = BallValues.playerRadius;
+	const playerSpeed = ballValues.playerSpeed;
+	const playerRadius = gameValues.playerRadius;
 
 	const [score, setScore] = useState(0);
 	const [time, setTime] = useState(0);
-	const [lives, setLives] = useState(GameValues.numberOfStartingLives);
+	const [lives, setLives] = useState(gameValues.numberOfStartingLives);
 
 	// Initial enemy setup
-	const enemyBallRadius = BallValues.enemyBallRadius;
-	const enemyBallSpawnTimeout = GameValues.enemyBallSpawnTimeout;
+	const enemyBallRadius = ballValues.enemyBallRadius;
 	const [enemyBalls, setEnemyBalls] = useState([
 		{
 			radius: enemyBallRadius,
@@ -35,8 +36,8 @@ function Game(stateProps: any) {
 	])
 
 	// Initial point ball setup TODO: with the minimum number
-	const pointBallValue = GameValues.pointBallValue;
-	const pointBallRadius = BallValues.pointBallRadius;
+	const pointBallValue = gameValues.pointBallValue;
+	const pointBallRadius = ballValues.pointBallRadius;
 	const [pointBalls, setPointBalls] = useState([
 		{
 			radius: pointBallRadius,
@@ -128,12 +129,11 @@ function Game(stateProps: any) {
 				return !ballsToDelete.includes(ball);
 			}));
 
-			if (pointBalls.length <= GameValues.minimumNumberOfPointBalls) {
+			if (pointBalls.length <= gameValues.minimumNumberOfPointBalls) {
 				SpawnPointBall(pointBalls, setPointBalls, pointBallRadius);
 			}
 		}
-	}, [playerRadius, playerLeft, playerTop, pointBalls, pointBallRadius, pointBallValue, score, time]);
-	
+	}, [playerRadius, playerLeft, playerTop, pointBalls, pointBallRadius, pointBallValue, score, time, gameValues]);
 
 	// Detect if enemy ball touches player ball
 	useEffect(() => {
@@ -167,38 +167,38 @@ function Game(stateProps: any) {
 			setTime(time + (refreshRate / 1000));
 
 			// Spawn in a new point ball
-			if ((Math.round(time * 100) / 100) % GameValues.pointBallSpawnRate === 0) {
+			if ((Math.round(time * 100) / 100) % gameValues.pointBallSpawnRate === 0) {
 				SpawnPointBall(pointBalls, setPointBalls, pointBallRadius);
 			}
 
 			// Spawn in a new enemy ball
-			if (enemyBalls.length < GameValues.maximumNumberOfEnemyBalls && (Math.round(time * 100) / 100) % GameValues.enemyBallSpawnRate === 0) {
+			if (enemyBalls.length < gameValues.maximumNumberOfEnemyBalls && (Math.round(time * 100) / 100) % gameValues.enemyBallSpawnRate === 0) {
 				SpawnEnemyBall(enemyBalls, setEnemyBalls, enemyBallRadius);
 			}
 
 			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component, which likely needs doing anyway
 			if (lives <= 0) {
-				stateProps.setState(appStates.Menu);
+				stateProps.setState(appStates.LossScreen);
 			}
 
 		}, refreshRate);
 		return () => clearInterval(timer);
-	}, [time, refreshRate, pointBalls, pointBallRadius, enemyBalls, enemyBallRadius, lives, stateProps]);
+	}, [time, refreshRate, pointBalls, pointBallRadius, enemyBalls, enemyBallRadius, lives, gameValues, stateProps]);
 
 	return (
 		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0}>
-			<BackButton setState={stateProps.setState} baseClass='ball-game'></BackButton>
+			<BackButton setState={stateProps.setState} baseClass='ball-game' previousState={appStates.GameSelection}></BackButton>
 
 			<GameInfo score={score} time={time} lives={lives}></GameInfo>
 
-			<PlayerBall radius={playerRadius} coordinates={[playerLeft, playerTop]}></PlayerBall>
+			<PlayerBall radius={playerRadius} coordinates={[playerLeft, playerTop]} speed={playerSpeed} isMoving={true} refreshRate={refreshRate}></PlayerBall>
 
 			{
-				pointBalls.map(pointBall => <PointsBall radius={pointBall.radius} coordinates={pointBall.coordinates} color={pointBall.color}></PointsBall>)
+				pointBalls.map(pointBall => <PointsBall radius={pointBall.radius} coordinates={pointBall.coordinates} color={pointBall.color} speed={ballValues.pointBallSpeed} isMoving={gameValues.pointBallsMoving} refreshRate={refreshRate}></PointsBall>)
 			}
 
 			{
-				enemyBalls.map(enemyBall => <EnemyBall radius={enemyBall.radius} coordinates={enemyBall.coordinates} playerCoordinates={[playerLeft, playerTop]}></EnemyBall>)
+				enemyBalls.map(enemyBall => <EnemyBall radius={enemyBall.radius} coordinates={enemyBall.coordinates} playerCoordinates={[playerLeft, playerTop]} speed={ballValues.enemyBallSpeed} isMoving={gameValues.enemyBallsMoving} enemyBallTimeout={gameValues.enemyBallSpawnTimeout} refreshRate={refreshRate}></EnemyBall>)
 			}
 		</div>
 	);
@@ -211,7 +211,7 @@ function SpawnPointBall(pointBalls: any, setPointBalls: any, pointBallRadius: nu
 		{
 			radius: pointBallRadius,
 			coordinates: [getRandomInt(0, window.innerWidth - pointBallRadius), getRandomInt(0, window.innerHeight - pointBallRadius)],
-			color: ''
+			color: Math.round(Math.random()) ? 'green' : 'blue'
 		}
 	]))
 }

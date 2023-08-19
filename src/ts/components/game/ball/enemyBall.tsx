@@ -1,9 +1,5 @@
 import { Component } from 'react';
 import { EnemyBallProps } from '../../../types/game/ball/ball.tsx';
-import { GameValues } from '../../../values/gameValues.tsx';
-import { BallValues } from '../../../values/ballValues.tsx';
-
-const enemyBallTimeout = GameValues.enemyBallSpawnTimeout;
 
 export class EnemyBall extends Component<EnemyBallProps> {
     xSpeed: number = 0;
@@ -16,22 +12,20 @@ export class EnemyBall extends Component<EnemyBallProps> {
     constructor(props: EnemyBallProps) {
         super(props);
 
-        this.timeUntilActive = enemyBallTimeout;
+        this.timeUntilActive = this.props.enemyBallTimeout;
     }
 
     componentDidMount(): void {
-        if (GameValues.enemyBallsMoving) {
-            const enemySpeed = BallValues.enemyBallSpeed;
+        if (this.props.isMoving) {
+            const enemySpeed = this.props.speed;
 
             this.timer = setInterval(() => {
                 // If still in timeout, don't move. Refresh rate is in milliseconds but time until active is seconds
                 if (this.timeUntilActive > 0) {
-                    this.timeUntilActive -= GameValues.refreshRate / 1000;
+                    this.timeUntilActive -= this.props.refreshRate / 1000;
                     return;
                 }
                 else {
-                    let radius = this.props.radius;
-
                     let x = this.props.coordinates[0];
                     let y = this.props.coordinates[1];
     
@@ -53,7 +47,15 @@ export class EnemyBall extends Component<EnemyBallProps> {
                     this.props.coordinates[0] += this.xSpeed;
                     this.props.coordinates[1] += this.ySpeed;
                 }              
-            }, GameValues.refreshRate);
+            }, this.props.refreshRate);
+        }
+        else {
+            this.timer = setInterval(() => {
+                if (this.timeUntilActive > 0) {
+                    this.timeUntilActive -= this.props.refreshRate / 1000;
+                    return;
+                }
+            }, this.props.refreshRate)
         }
     }
 
@@ -63,7 +65,7 @@ export class EnemyBall extends Component<EnemyBallProps> {
             {
                 left: this.props.coordinates[0] - this.props.radius, 
                 top: this.props.coordinates[1] - this.props.radius, 
-                opacity: (enemyBallTimeout - this.timeUntilActive) / enemyBallTimeout}
+                opacity: (this.props.enemyBallTimeout - this.timeUntilActive) / this.props.enemyBallTimeout}
         }></div>
     }
 }

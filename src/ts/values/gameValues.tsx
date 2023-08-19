@@ -1,6 +1,10 @@
-export const GameValues = {
+import { GameValuesType } from "../types/values/gameValues";
+
+export const GameValues: GameValuesType = {
     refreshRate: 16.666667, // in ms, leads to roughly 60 frames per second
 
+    playerSpeed: 25,
+    playerRadius: 25,
     numberOfStartingLives: 3,
 
     pointBallSpawnRate: 1, // in seconds

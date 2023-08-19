@@ -17,6 +17,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
     - Survival? (play as a blue/green ball and survive a white ball)
   - High score menu
     - Save scores locally
+    - Add a check to ensure that default values have not been changed before saving/submitting scores
     - Extend to having these in a database
 - Work out what's needed from the create-react-app bootstrap and delete everything else
 - Tests ?

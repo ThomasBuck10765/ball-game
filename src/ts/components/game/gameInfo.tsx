@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import { GameInfoProps } from '../../types/game/gameInfo.tsx';
 
-export class GameInfo extends Component<GameInfoProps> {
+export default class GameInfo extends Component<GameInfoProps> {
     
     render() {
         return (

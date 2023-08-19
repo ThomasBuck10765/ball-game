@@ -1,7 +1,16 @@
-export enum appStates {
+enum appStates {
     Menu = "menu",
-    HighScores = "high-scores",
+    
+    GameSelection = "game-selection",
+    
     Game = "game",
+    LossScreen = "loss-screen",
+
+    HighScores = "high-scores",
+    
     Settings = "settings",
+    
     AccessibilityOptions = "accessibility-options"
 }
+
+export default appStates;

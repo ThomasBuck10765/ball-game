@@ -1,15 +1,12 @@
 import { BallProps } from '../../../types/game/ball/ball.tsx';
 import { Ball } from './ball.tsx';
 import { getRandomNumber } from '../../../helpers/randomNumbers.tsx';
-import { GameValues } from '../../../values/gameValues.tsx';
-import { BallValues } from '../../../values/ballValues.tsx';
-
-const pointBallSpeed = BallValues.pointBallSpeed;
 
 export class PointsBall extends Ball {
     color: string;
-    xSpeed: number = getRandomNumber(-pointBallSpeed, pointBallSpeed, true);
-    ySpeed: number = getRandomNumber(-pointBallSpeed, pointBallSpeed, true);
+    
+    xSpeed: number = getRandomNumber(-this.props.speed, this.props.speed, true);
+    ySpeed: number = getRandomNumber(-this.props.speed, this.props.speed, true);
 
     timer?: NodeJS.Timer;
 
@@ -26,7 +23,7 @@ export class PointsBall extends Ball {
     }
 
     componentDidMount(): void {
-        if (GameValues.pointBallsMoving) {
+        if (this.props.isMoving) {
             this.timer = setInterval(() => {
                 let radius = this.props.radius;
     
@@ -77,7 +74,7 @@ export class PointsBall extends Ball {
                         this.ySpeed = -this.ySpeed;
                     }
                 }
-            }, GameValues.refreshRate);
+            }, this.props.refreshRate);
         }
 
     }
