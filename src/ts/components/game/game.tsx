@@ -11,7 +11,10 @@ import { GameValuesType } from '../../types/values/gameValues';
 import { BallValuesType } from '../../types/values/ballValues';
 import { GameValues } from '../../values/gameValues';
 import { BallValues } from '../../values/ballValues';
-import { BallProps, BaseBallProps } from '../../types/game/ball/ball';
+import { BaseBallProps, EnemyBallType, PointBallType } from '../../types/game/ball/ball';
+
+let pointBallId = 1;
+let enemyBallId = 1;
 
 function Game(stateProps: any) {
 	// Game setup
@@ -33,12 +36,12 @@ function Game(stateProps: any) {
 	const [time, setTime] = useState(0);
 	const [lives, setLives] = useState(gameValues.numberOfStartingLives);
 
+	// Initial point ball setup
+	const [pointBalls, setPointBalls] = useState<PointBallType[]>([]);
+
 	// Initial enemy setup
 	const enemyBallRadius = ballValues.enemyBallRadius;
-	const [enemyBalls, setEnemyBalls] = useState<BaseBallProps[]>([]);
-
-	// Initial point ball setup
-	const [pointBalls, setPointBalls] = useState<BallProps[]>([]);
+	const [enemyBalls, setEnemyBalls] = useState<EnemyBallType[]>([]);
 
 	// Player movement
 	const keyDownEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {    
@@ -101,19 +104,19 @@ function Game(stateProps: any) {
 	useEffect(() => {
 		const radiusAdded = ballValues.pointBallRadius + ballValues.playerRadius;
 
-		let ballsToDelete: BallProps[] = [];
+		let ballsToDeleteById: number[] = [];
 		
 		pointBalls.forEach(pointBall => {
 			if (areBallsInContact([playerLeft, playerTop], pointBall.coordinates, radiusAdded)) {
-				ballsToDelete.push(pointBall);
+				ballsToDeleteById.push(pointBall.id);
 			}
 		});
 
-		if (ballsToDelete.length !== 0) {
-			setScore(score + (ballsToDelete.length) * gameValues.pointBallValue);
+		if (ballsToDeleteById.length !== 0) {
+			setScore(score + (ballsToDeleteById.length) * gameValues.pointBallValue);
 
 			setPointBalls(pointBalls.filter(function (ball) {
-				return !ballsToDelete.includes(ball);
+				return !ballsToDeleteById.includes(ball.id);
 			}));
 
 			// Ensure there are the minimum number of point balls
@@ -125,20 +128,20 @@ function Game(stateProps: any) {
 	useEffect(() => {
 		const radiusAdded = playerRadius + enemyBallRadius;
 
-		let enemiesToDelete: BaseBallProps[] = [];
+		let enemiesToDeleteById: number[] = [];
 
 		// TODO: Update so that whether the ball is active is considered
 		enemyBalls.forEach(enemy => {
 			if (areBallsInContact([playerLeft, playerTop], enemy.coordinates, radiusAdded)) {
-				enemiesToDelete.push(enemy);
+				enemiesToDeleteById.push(enemy.id);
 			}
 		});
 
-		if (enemiesToDelete.length !== 0) {
+		if (enemiesToDeleteById.length !== 0) {
 			setLives(lives - 1);
 
 			setEnemyBalls(enemyBalls.filter(function (enemy) {
-				return !enemiesToDelete.includes(enemy);
+				return !enemiesToDeleteById.includes(enemy.id);
 			}))
 		}
 	}, [playerRadius, playerLeft, playerTop, enemyBalls, enemyBallRadius, lives, time]);
@@ -188,17 +191,17 @@ function Game(stateProps: any) {
 			<PlayerBall radius={playerRadius} coordinates={[playerLeft, playerTop]} speed={playerSpeed} isMoving={true} refreshRate={refreshRate}></PlayerBall>
 
 			{
-				pointBalls.map(pointBall => <PointsBall radius={pointBall.radius} coordinates={pointBall.coordinates} color={pointBall.color} speed={ballValues.pointBallSpeed} isMoving={gameValues.pointBallsMoving} refreshRate={refreshRate}></PointsBall>)
+				pointBalls.map(pointBall => <PointsBall key={pointBall.id} radius={pointBall.radius} coordinates={pointBall.coordinates} color={pointBall.color} speed={ballValues.pointBallSpeed} isMoving={gameValues.pointBallsMoving} refreshRate={refreshRate}></PointsBall>)
 			}
 
 			{
-				enemyBalls.map(enemyBall => <EnemyBall radius={enemyBall.radius} coordinates={enemyBall.coordinates} playerCoordinates={[playerLeft, playerTop]} speed={ballValues.enemyBallSpeed} isMoving={gameValues.enemyBallsMoving} enemyBallTimeout={gameValues.enemyBallSpawnTimeout} refreshRate={refreshRate}></EnemyBall>)
+				enemyBalls.map(enemyBall => <EnemyBall key={enemyBall.id} radius={enemyBall.radius} coordinates={enemyBall.coordinates} playerCoordinates={[playerLeft, playerTop]} speed={ballValues.enemyBallSpeed} isMoving={gameValues.enemyBallsMoving} enemyBallTimeout={gameValues.enemyBallSpawnTimeout} refreshRate={refreshRate}></EnemyBall>)
 			}
 		</div>
 	);
 }
 
-function EnsureMinimumPointBalls(pointBalls: BallProps[], setPointBalls: any, gameValues: GameValuesType, ballValues: BallValuesType) {
+function EnsureMinimumPointBalls(pointBalls: PointBallType[], setPointBalls: any, gameValues: GameValuesType, ballValues: BallValuesType) {
 	if (pointBalls.length <= gameValues.minimumNumberOfPointBalls) {
 		for (let i = 0; i < (gameValues.minimumNumberOfPointBalls - pointBalls.length); i++) {
 			SpawnPointBall(pointBalls, setPointBalls, gameValues, ballValues)
@@ -207,28 +210,31 @@ function EnsureMinimumPointBalls(pointBalls: BallProps[], setPointBalls: any, ga
 }
 
 // TODO: Can we fix these anys to actual types?
-function SpawnPointBall(pointBalls: BallProps[], setPointBalls: any, gameValues: GameValuesType, ballValues: BallValuesType) {
+function SpawnPointBall(pointBalls: PointBallType[], setPointBalls: any, gameValues: GameValuesType, ballValues: BallValuesType) {
 	// Spawn in a new point ball
 	setPointBalls(pointBalls.concat(
 		{
+			id: pointBallId++,
 			radius: ballValues.pointBallRadius,
 			coordinates: [getRandomInt(0, window.innerWidth - ballValues.pointBallRadius), getRandomInt(0, window.innerHeight - ballValues.pointBallRadius)],
 			color: Math.round(Math.random()) ? 'green' : 'blue',
-			speed: ballValues.pointBallSpeed,
-			isMoving: gameValues.pointBallsMoving,
-			refreshRate: gameValues.refreshRate
 		}
 	))
+
+	return pointBallId;
 }
 
-function SpawnEnemyBall(enemyBalls: BaseBallProps[], setEnemyBalls: any, enemyBallRadius: number) {
+function SpawnEnemyBall(enemyBalls: EnemyBallType[], setEnemyBalls: any, enemyBallRadius: number) {
 	// Spawn in a new enemy ball
 	setEnemyBalls(enemyBalls.concat([
 		{
+			id: enemyBallId++,
 			radius: enemyBallRadius,
 			coordinates: [getRandomInt(0, window.innerWidth - enemyBallRadius), getRandomInt(0, window.innerHeight - enemyBallRadius)],
 		}
 	]));
+
+	return enemyBallId;
 }
 
 export default Game;

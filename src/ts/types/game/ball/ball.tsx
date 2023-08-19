@@ -17,3 +17,12 @@ export type EnemyBallProps = BaseBallProps & {
     enemyBallTimeout: number,
     refreshRate: number,
 };
+
+export type PointBallType = BaseBallProps & {
+    id: number,
+    color?: string,
+}
+
+export type EnemyBallType = BaseBallProps & {
+    id: number
+}
