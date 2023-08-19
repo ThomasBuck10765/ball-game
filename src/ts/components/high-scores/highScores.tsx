@@ -102,7 +102,7 @@ export default class HighScores extends Component<HighScoresProps> {
                     {
                         this.isLoading ?
                             <div>Fetching high scores...</div>
-                            : this.highScoreItems.length > 0 ?
+                            : this.highScoreItemsOriginal.length > 0 ?
                                 <React.Fragment>
                                     <div className='high-score__filter-container'>
                                         <button className='high-score__filter' type='submit' onClick={this.filterHighScoresByName}>Filter scores to Username {this.props.username}</button>
