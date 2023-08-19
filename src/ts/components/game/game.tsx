@@ -192,27 +192,6 @@ function Game(stateProps: any) {
 		}
 	}, [playerRadius, playerLeft, playerTop, enemyBalls, enemyBallRadius, lives, time]);
 
-	// Sets up spawning of point and enemy balls
-	useEffect(() => {
-		const timer = setInterval(() => {
-			// Spawn in a new point ball
-			if ((Math.round(time * 100) / 100) % gameValues.pointBallSpawnRate === 0) {
-				SpawnPointBall(pointBalls, setPointBalls, gameValues, ballValues);
-			}
-
-			// Spawn in a new enemy ball, ensure one spawns at beginning
-			if (enemyBalls.length < gameValues.maximumNumberOfEnemyBalls && ((Math.round(time * 100) / 100) % gameValues.enemyBallSpawnRate === 0 || time === gameValues.refreshRate / 1000)) {
-				SpawnEnemyBall(enemyBalls, setEnemyBalls, ballValues.enemyBallRadius, [playerLeft, playerTop], playerRadius);
-			}
-
-		}, gameValues.refreshRate);
-
-		// Ensure there are the minimum number of point balls
-		EnsureMinimumPointBalls(pointBalls, setPointBalls, gameValues, ballValues);
-
-		return () => clearInterval(timer);
-	}, [playerRadius,  playerLeft, playerTop, pointBalls, enemyBalls, ballValues, gameValues, time])
-
 	// Deals with dying
 	useEffect(() => {
 		if (lives <= 0 && score > 0) {
@@ -231,13 +210,29 @@ function Game(stateProps: any) {
 	});
 
 	// Starts a timer on app load which enforces a refresh rate of 60 fps (default)
+	// Spawns in balls
 	useEffect(() => {
 		const timer = setInterval(() => {
 			setTime(time + (gameValues.refreshRate / 1000));
+
+			// Spawn in a new point ball
+			if ((Math.round(time * 100) / 100) % gameValues.pointBallSpawnRate === 0) {
+				SpawnPointBall(pointBalls, setPointBalls, gameValues, ballValues);
+			}
+
+			// Spawn in a new enemy ball, ensure one spawns at beginning
+			if (enemyBalls.length < gameValues.maximumNumberOfEnemyBalls && (Math.round(time * 100) / 100) % gameValues.enemyBallSpawnRate === 0) {
+				SpawnEnemyBall(enemyBalls, setEnemyBalls, ballValues.enemyBallRadius, [playerLeft, playerTop], playerRadius);
+			}
+			
+
 		}, gameValues.refreshRate);
 
+		// Ensure there are the minimum number of point balls
+		EnsureMinimumPointBalls(pointBalls, setPointBalls, gameValues, ballValues);
+
 		return () => clearInterval(timer);
-	}, [time, gameValues]);
+	}, [time, pointBalls, enemyBalls, playerLeft, playerTop, playerRadius, gameValues, ballValues]);
 
 	return (
 		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0} onClick={clickEvent}>
