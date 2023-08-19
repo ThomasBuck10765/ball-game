@@ -1,7 +1,6 @@
 export type HighScoreItemProps = {
-    id: number,
     score: number,
-    dateSubmitted: Date,
+    dateSubmitted: string,
     time: number,
     name: string
 }

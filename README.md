@@ -6,6 +6,8 @@ You play as the white ball, your goal is to collect as many green and blue balls
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Uses [firebase](https://firebase.google.com/) to store the high scores.
+
 Makes use of the [naughty-words-js](https://github.com/LDNOOBW/naughty-words-js) npm package
 
 ## Development Notes
@@ -16,9 +18,8 @@ Makes use of the [naughty-words-js](https://github.com/LDNOOBW/naughty-words-js)
   - Menu for different game modes:
     - Survival? (play as a blue/green ball and survive a white ball)
   - High score menu
-    - Save scores locally ?
-    - Add a check to ensure that default values have not been changed before saving/submitting scores
-    - Extend to having these in a database
+    - Save scores locally / use caching ?
+    - UPDATE SECURITY ROLES ON FIREBASE INSTANCE
 - Work out what's needed from the create-react-app bootstrap and delete everything else
 - Tests ?
 - Publish to an Azure site
@@ -61,9 +62,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
