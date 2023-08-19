@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlayerBall } from './ts/components/ball/playerBall';
 import { BallValues } from './ts/values/ballValues/ballValues';
 import { EnemyBall } from './ts/components/ball/enemyBall';
@@ -78,6 +78,15 @@ function App() {
 	// TODO: Enemy movement
 
 	// TODO?: Score ball movement
+
+	// Starts a timer on app load
+	useEffect(() => {
+		const timer = setInterval(() => {
+			console.log(time);
+			setTime(time + 1);
+		}, 1000);
+		return () => clearInterval(timer);
+	}, [time]);
 
 	return (
 		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0}>
