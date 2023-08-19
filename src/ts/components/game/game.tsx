@@ -166,24 +166,15 @@ function Game(stateProps: any) {
 			}
 
 			// TODO: Do this properly, maybe needs to be handled above this ? That would suggest we need to move most of this to a Game Component, which likely needs doing anyway
-			if (lives <= 0) {
+			if (lives <= 0 && score > 0) {
 				if (!hasEditedValues) {
-					// const isAuthenticated = await authenticate();
-					const username = stateProps.username;
-
 					// From here, submit an API call to save the new high score
-					let highScoreItem: HighScoreItemProps = {
-						name: username,
+					submitScore({
+						name: stateProps.username,
 						score: score,
 						time: time,
 						dateSubmitted: new Date().toLocaleDateString("en-GB")
-					}
-					// if (isAuthenticated) {
-						// TODO: Then do swap the state
-						base.push('highScores', {
-							data: highScoreItem
-						});
-					// }
+					})
 				}
 
 				stateProps.setState(appStates.LossScreen);
@@ -214,6 +205,15 @@ function Game(stateProps: any) {
 			}
 		</div>
 	);
+}
+
+async function submitScore(highScoreItem: HighScoreItemProps) {
+	const isAuthenticated = await authenticate();
+	if (isAuthenticated) {
+		base.push('highScores', {
+			data: highScoreItem
+		});
+	}
 }
 
 function EnsureMinimumPointBalls(pointBalls: PointBallType[], setPointBalls: any, gameValues: GameValuesType, ballValues: BallValuesType) {

@@ -6,12 +6,16 @@ import base, { authenticate } from '../../firebase/firebase';
 
 export default class HighScores extends Component<HighScoresProps> {
 
+    isLoading: boolean;
+
     highScoreItems: HighScoreItemProps[];
     highScoreItemsOriginal: HighScoreItemProps[];
     ref: any;
 
     constructor(props: HighScoresProps) {
         super(props);
+
+        this.isLoading = true;
 
         this.highScoreItems = [];
         this.highScoreItemsOriginal = [];
@@ -44,12 +48,18 @@ export default class HighScores extends Component<HighScoresProps> {
                     return b.score - a.score;
                 });
                 this.highScoreItemsOriginal = (this.highScoreItems);
+
+                this.isLoading = false;
                 this.forceUpdate();
             }).catch((error: any) => {
                 console.log(error);
+                this.isLoading = false;
+                this.forceUpdate();
             })
+        } else {
+            this.isLoading = false;
+            this.forceUpdate();
         }
-        
     }
 
     filterHighScoresByName = () => {
@@ -64,10 +74,13 @@ export default class HighScores extends Component<HighScoresProps> {
 
     renderHighScoreItem = (highScore: HighScoreItemProps, index: number) => {
         return (
-            <div className='high-score__entries-container' key={index}>
-                <div className='high-score__entry'>{highScore.score} points, {highScore.dateSubmitted}, {Math.round(highScore.time * 100) / 100}s, {highScore.name}</div> 
-            </div>
-        )
+            <tr className='high-score__entry-row' key={index}>
+                <td className="high-score__entry-points">{highScore.score}</td>
+                <td className="high-score__entry-name">{highScore.name}</td>
+                <td className="high-score__entry-time">{Math.round(highScore.time * 100) / 100}</td>
+                <td className="high-score__entry-date">{highScore.dateSubmitted}</td>
+            </tr>
+        );
     }
 
     render() {
@@ -81,26 +94,40 @@ export default class HighScores extends Component<HighScoresProps> {
                     </div>
 
                     <div className="high-score__description-container">
-                        <span className="high-score__description">Please note that these are only for the Regular game mode with no altered settings.</span>
+                        <span className="high-score__description">Please note that these are (currently) only for the Regular game mode with no altered settings.</span>
                     </div>
 
                     <br />
 
                     {
-                        this.highScoreItems.length > 0 ?
-                            <React.Fragment>
-                                <div>
-                                    <button type='submit' onClick={this.filterHighScoresByName}>Filter scores to username {this.props.username}</button>
-                                </div>
+                        this.isLoading ?
+                            <div>Fetching high scores...</div>
+                            : this.highScoreItems.length > 0 ?
+                                <React.Fragment>
+                                    <div className='high-score__filter-container'>
+                                        <button className='high-score__filter' type='submit' onClick={this.filterHighScoresByName}>Filter scores to Username {this.props.username}</button>
+                                    </div>
 
-                                <div>
-                                    <button type='reset' onClick={this.resetDisplayedHighScores}>Top scores</button>
-                                </div>
+                                    <div className='high-score__filter-container'>
+                                        <button className='high-score__filter' type='reset' onClick={this.resetDisplayedHighScores}>Top scores</button>
+                                    </div>
 
-                                <br />
-                                {this.highScoreItems.map((highScore, index) => this.renderHighScoreItem(highScore, index))}
-                            </React.Fragment>
-                            : <div>Sorry, the high scores aren't available at the moment -please try again later.</div>
+                                    <br />
+                                    <table className='high-score__entries-table'>
+                                        <thead>
+                                            <tr className='high-score__entries-table-header-row'>
+                                                <th>Points</th>
+                                                <th>Username</th>
+                                                <th>Time (s)</th>
+                                                <th>Date submitted</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.highScoreItems.map((highScore, index) => this.renderHighScoreItem(highScore, index))}
+                                        </tbody>
+                                    </table>
+                                </React.Fragment>
+                                : <div>Sorry, the high scores aren't available at the moment -please try again later. If the problem persists, please report it to me on <a href='https://github.com/ThomasBuck10765/ball-game' target='_blank' rel='noopener noreferrer'>GitHub</a>.</div>
                     }
                 </div>
             </div>

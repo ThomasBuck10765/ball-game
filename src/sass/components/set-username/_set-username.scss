@@ -1,0 +1,26 @@
+$base-class: set-username;
+
+.#{$base-class} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+
+    .#{$base-class}__title-container {
+        padding: 20px 0;
+
+        @include title;
+        @include bold;
+    }
+
+    > div {
+        padding-bottom: 20px;
+    }
+
+    .#{$base-class}__username-container {
+        input {
+            text-align: center;
+        }
+    }
+}

@@ -1,0 +1,5 @@
+$base-class: ball-game;
+
+.#{$base-class} {
+    @include back-button;
+}

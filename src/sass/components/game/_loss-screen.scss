@@ -1,0 +1,21 @@
+$base-class: loss-screen;
+
+.#{$base-class} {
+    @include back-button;
+
+    .#{$base-class}__text-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100vh - 20px);
+        padding-top: 20px;
+        text-align: center;
+
+        .#{$base-class}__text {
+            @include title;
+            @include bold;
+            
+            letter-spacing: 16px;
+        }
+    }
+}

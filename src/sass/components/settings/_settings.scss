@@ -6,6 +6,54 @@ $base-class: settings-menu;
     // Styling for the game settings
     .#{$base-class}__game-items-container {
         padding-top: 20px;
+        text-align: center;
+
+        > div, .#{$base-class}__settings-container > div {
+            padding-bottom: 20px;
+        }
+
+        .#{$base-class}__title-container {
+            .#{$base-class}__title {
+                @include title;
+            }
+        }
+
+        .#{$base-class}__settings-container {
+            .#{$base-class}__type-settings-container {
+                .#{$base-class}__type-settings-text {
+                    font-weight: 700;
+                    font-size: 18px;
+                }
+
+                table {
+                    margin: auto;
+                    padding-top: 20px;
+
+                    .#{$base-class}__individual-setting {
+                        span {
+                            padding-right: 30px;
+                        }
+    
+                        &.__boolean {
+                            input {
+                                height: 20px;
+                                width: 20px;
+                            }
+                        }
+    
+                        &.__number {
+                        }
+                    }
+    
+                    &.__ball {
+                    }
+    
+                    &.__game {
+                    }
+                }
+                
+            }
+        }
     }
 
     // Styling for the accessibility settings

@@ -35,26 +35,30 @@ export default class GameSettings extends Component<GameSettingsProps> {
 
     renderIndividualBooleanValue(isBallValue: boolean, fieldName: string, valueName: string, value: boolean) {
         return (
-            <div>
-                <label>
+            <tr className='settings-menu__individual-setting __boolean'>
+                <th>
                     <span>{fieldName}</span>
-                    <input type='checkbox' checked={value} onChange={() => {
+                </th>
+                <th>
+                    <input title={fieldName} type='checkbox' checked={value} onChange={() => {
                         let updatedValue: any = {};
 
                         updatedValue[valueName] = !value;
                         this.setValue(isBallValue, updatedValue);
                     }} />
-                </label>
-            </div>
-        )
+                </th>
+            </tr>
+        );
     }
 
     renderIndividualValue(isBallValue: boolean, fieldName: string, valueName: string, value: number, floatValue?: boolean, defaultValue?: number) {
         return (
-            <div>
-                <label>
-                    <span>{fieldName}: </span>
-                    <input type='number' value={value} onChange={e => {
+            <tr className='settings-menu__individual-setting __number'>
+                <th>
+                    <span>{fieldName}:</span>
+                </th>
+                <th>
+                    <input title={fieldName} type='number' value={value} onChange={e => {
                         let updatedValue: any = {};
 
                         if (floatValue === undefined || !floatValue) {
@@ -65,28 +69,30 @@ export default class GameSettings extends Component<GameSettingsProps> {
                             updatedValue[valueName] = setToFloatValueOrDefault(e.target.value, (defaultValue === undefined ? 1 : defaultValue))
                             this.setValue(isBallValue, updatedValue)
                         }
-                    }}
-                    />
-                </label>
-            </div>
-        )
+                    }} />
+                </th>
+            </tr>
+        );
     }
 
     renderBallValues() {
         const isBallValue = true;
 
         return (
-            <div>
-                {this.renderIndividualValue(isBallValue, 'Player radius (px)', 'playerRadius', this.props.ballValues.playerRadius)}
-                {this.renderIndividualValue(isBallValue, 'Point ball radius (px)', 'pointBallRadius', this.props.ballValues.pointBallRadius)}
-                {this.renderIndividualValue(isBallValue, 'Enemy ball radius (px)', 'enemyBallRadius', this.props.ballValues.enemyBallRadius)}
+            <table >
+                <thead></thead>
+                <tbody>
+                    {this.renderIndividualValue(isBallValue, 'Player radius (px)', 'playerRadius', this.props.ballValues.playerRadius)}
+                    {this.renderIndividualValue(isBallValue, 'Point ball radius (px)', 'pointBallRadius', this.props.ballValues.pointBallRadius)}
+                    {this.renderIndividualValue(isBallValue, 'Enemy ball radius (px)', 'enemyBallRadius', this.props.ballValues.enemyBallRadius)}
 
-                <br />
+                    <br />
 
-                {this.renderIndividualValue(isBallValue, 'Player speed', 'playerSpeed', this.props.ballValues.playerSpeed)}
-                {this.renderIndividualValue(isBallValue, 'Point ball speed', 'pointBallSpeed', this.props.ballValues.pointBallSpeed)}
-                {this.renderIndividualValue(isBallValue, 'Enemy ball speed', 'enemyBallSpeed', this.props.ballValues.enemyBallSpeed)}
-            </div>
+                    {this.renderIndividualValue(isBallValue, 'Player speed', 'playerSpeed', this.props.ballValues.playerSpeed)}
+                    {this.renderIndividualValue(isBallValue, 'Point ball speed', 'pointBallSpeed', this.props.ballValues.pointBallSpeed)}
+                    {this.renderIndividualValue(isBallValue, 'Enemy ball speed', 'enemyBallSpeed', this.props.ballValues.enemyBallSpeed)}
+                </tbody>
+            </table>
         );
     }
 
@@ -94,30 +100,33 @@ export default class GameSettings extends Component<GameSettingsProps> {
         const isBallValue = false;
 
         return (
-            <div>
-                {this.renderIndividualValue(isBallValue, 'Refresh rate (ms)', 'refreshRate', this.props.gameValues.refreshRate, true, 8.333333)}
+            <table>
+                <thead></thead>
+                <tbody>
+                    {this.renderIndividualValue(isBallValue, 'Refresh rate (ms)', 'refreshRate', this.props.gameValues.refreshRate, true, 8.333333)}
 
-                <br />
+                    <br />
 
-                {this.renderIndividualValue(isBallValue, 'Number of starting lives', 'numberOfStartingLives', this.props.gameValues.numberOfStartingLives)}
+                    {this.renderIndividualValue(isBallValue, 'Number of starting lives', 'numberOfStartingLives', this.props.gameValues.numberOfStartingLives)}
 
-                <br />
+                    <br />
 
-                {this.renderIndividualValue(isBallValue, 'Point ball spawn rate (s)', 'pointBallSpawnRate', this.props.gameValues.pointBallSpawnRate)}
-                {this.renderIndividualValue(isBallValue, 'Point ball value', 'pointBallValue', this.props.gameValues.pointBallValue)}
-                {this.renderIndividualBooleanValue(isBallValue, 'Are point balls moving?', 'pointBallsMoving', this.props.gameValues.pointBallsMoving)}
+                    {this.renderIndividualValue(isBallValue, 'Point ball spawn rate (s)', 'pointBallSpawnRate', this.props.gameValues.pointBallSpawnRate)}
+                    {this.renderIndividualValue(isBallValue, 'Point ball value', 'pointBallValue', this.props.gameValues.pointBallValue)}
+                    {this.renderIndividualBooleanValue(isBallValue, 'Are point balls moving?', 'pointBallsMoving', this.props.gameValues.pointBallsMoving)}
 
-                <br />
+                    <br />
 
-                {this.renderIndividualValue(isBallValue, 'Enemy ball spawn rate (s)', 'enemyBallSpawnRate', this.props.gameValues.enemyBallSpawnRate)}
-                {this.renderIndividualValue(isBallValue, 'Enemy ball spawn timeout (s)', 'enemyBallSpawnTimeout', this.props.gameValues.enemyBallSpawnTimeout)}
-                {this.renderIndividualBooleanValue(isBallValue, 'Are enemy balls moving?', 'enemyBallsMoving', this.props.gameValues.enemyBallsMoving)}
+                    {this.renderIndividualValue(isBallValue, 'Enemy ball spawn rate (s)', 'enemyBallSpawnRate', this.props.gameValues.enemyBallSpawnRate)}
+                    {this.renderIndividualValue(isBallValue, 'Enemy ball spawn timeout (s)', 'enemyBallSpawnTimeout', this.props.gameValues.enemyBallSpawnTimeout)}
+                    {this.renderIndividualBooleanValue(isBallValue, 'Are enemy balls moving?', 'enemyBallsMoving', this.props.gameValues.enemyBallsMoving)}
 
-                <br />
+                    <br />
 
-                {this.renderIndividualValue(isBallValue, 'Minimum number of point balls', 'minimumNumberOfPointBalls', this.props.gameValues.minimumNumberOfPointBalls)}
-                {this.renderIndividualValue(isBallValue, 'Maximum number of enemy balls', 'maximumNumberOfEnemyBalls', this.props.gameValues.maximumNumberOfEnemyBalls)}
-            </div>
+                    {this.renderIndividualValue(isBallValue, 'Minimum number of point balls', 'minimumNumberOfPointBalls', this.props.gameValues.minimumNumberOfPointBalls)}
+                    {this.renderIndividualValue(isBallValue, 'Maximum number of enemy balls', 'maximumNumberOfEnemyBalls', this.props.gameValues.maximumNumberOfEnemyBalls)}
+                </tbody>
+            </table>
         );
     }
 
@@ -127,25 +136,33 @@ export default class GameSettings extends Component<GameSettingsProps> {
                 <BackButton setState={this.props.setState} baseClass='settings-menu'></BackButton>
 
                 <div className='settings-menu__game-items-container'>
-                    <span>Game settings can be changed here. Changes are saved automatically. Game settings are reset on page refresh/reload. Note that making any changes here will prevent you from saving/submitting high scores.</span>
+                    <div className="settings-menu__title-container">
+                        <span className="settings-menu__title">Game Settings</span>
+                    </div>
+                    <div className="settings-menu__description-container">
+                        <span className='settings-menu__description'>Game settings can be changed here. Changes are saved automatically. Game settings are reset on page refresh/reload.</span>
+                        <br />
+                        <span className='settings-menu__description'>Note that making any changes here will prevent you from submitting high scores.</span>
+                    </div>
 
-                    <br /> <br />
+                    <div className="settings-menu__settings-container">
 
-                    <span>Ball settings:</span>
-                    {
-                        this.renderBallValues()
-                    }
+                        <div className='settings-menu__type-settings-container __ball'>
+                            <span className='settings-menu__type-settings-text'>Ball settings:</span>
+                            {
+                                this.renderBallValues()
+                            }
+                        </div>
 
-                    <br />
+                        <div className="settings-menu__type-settings-container __game">
+                            <span className='settings-menu__type-settings-text'>Game settings:</span>
+                            {
+                                this.renderGameValues()
+                            }
+                        </div>
 
-                    <span>Game settings:</span>
-                    {
-                        this.renderGameValues()
-                    }
-
-                    <br />
-
-                    <button type='reset' onClick={() => this.resetAllValues()}>Reset all values</button>
+                        <button className='settings-menu__reset-settings' type='reset' onClick={() => this.resetAllValues()}>Reset all values</button>
+                    </div>
                 </div>
             </div>
         );

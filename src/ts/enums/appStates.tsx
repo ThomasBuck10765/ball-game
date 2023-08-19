@@ -1,5 +1,5 @@
 enum appStates {
-    SetUsername = "Set Username",
+    SetUsername = "change Username",
 
     MainMenu = "Main Menu",
     

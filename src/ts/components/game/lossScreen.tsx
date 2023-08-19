@@ -8,7 +8,9 @@ export default class LossScreen extends Component<LossScreenProps> {
         return (
             <div className="loss-screen">
                 <BackButton setState={this.props.setState} baseClass="loss-screen"></BackButton>
-                Loser !
+                <div className="loss-screen__text-container">
+                    <span className="loss-screen__text">GAME OVER</span>
+                </div>
             </div>
         );
     }

@@ -1,6 +1,5 @@
 // Base
 @import "base/reset";
-// Layout
 
 // Utils
 @import "utils/variables";
@@ -16,15 +15,15 @@
 
 @import "components/high-scores/high-scores";
 
+@import "components/set-username/set-username";
+
 @import "components/settings/settings";
 
 // Game components
 @import "components/game/ball/ball";
+@import "components/game/game";
 @import "components/game/game-info";
+@import "components/game/loss-screen";
 
 // Pages
 @import "pages/page";
-
-// Themes
-
-// Vendors
