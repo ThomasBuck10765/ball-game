@@ -12,7 +12,7 @@ Uses Node v14.20.0
 
 ### TODO
 
-lol, everything
+lots
 
 ## Available Scripts
 

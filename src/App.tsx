@@ -20,16 +20,21 @@ function App() {
 	const [score, setScore] = useState(0);
 	const [time, setTime] = useState(0);
 
-	// Enemy setup
+	// Initial enemy setup
 	const [enemyLeft, setEnemyLeft] = useState(200);
 	const [enemyTop, setEnemyTop] = useState(200);
 	const enemySpeed = BallValues.enemySpeed;
-	const enemyRadius = BallValues.enemyBallRadius;
+	const enemyBallRadius = BallValues.enemyBallRadius;
+	const [enemyBalls, setEnemyBalls] = useState([
+		{
+			radius: enemyBallRadius,
+			coordinates: [getRandomInt(0, window.innerWidth - enemyBallRadius), getRandomInt(0, window.innerHeight - enemyBallRadius)]
+		}
+	])
 
 	// Initial point ball setup
 	const pointBallValue = GameValues.pointBallValue;
 	const pointBallRadius = BallValues.pointBallRadius;
-	const pointBallSpeed = BallValues.pointBallSpeed;
 	const [pointBalls, setPointBalls] = useState([
 		{
 			radius: pointBallRadius,
@@ -97,9 +102,9 @@ function App() {
 	// TODO: Enemy movement
 
 	// Detect if enemy ball touches player ball
-	// TODO: Work on this detection, it's a bit iffy
+	// TODO: Work on this detection, it's a slightly off
 	useEffect(() => {
-		const radiusDiff = enemyRadius + playerRadius;
+		const radiusDiff = enemyBallRadius + playerRadius;
 
 		if (Math.abs(playerLeft - enemyLeft) <= radiusDiff) {
 			if (Math.abs(playerTop - enemyTop) <= radiusDiff) {
@@ -112,21 +117,45 @@ function App() {
 	useEffect(() => {
 		const timer = setInterval(() => {
 			setTime(time + (refreshRate / 1000));
+
+			// Spawn in a new point ball
+			if ((Math.round(time * 100) / 100) % GameValues.pointBallSpawnRate === 0) {
+				setPointBalls(pointBalls.concat([
+					{
+						radius: pointBallRadius,
+						coordinates: [getRandomInt(0, window.innerWidth - pointBallRadius), getRandomInt(0, window.innerHeight - pointBallRadius)],
+						color: ''
+					}
+				]))
+			}
+
+			// Spawn in a new enemy ball
+			if ((Math.round(time * 100) / 100) % GameValues.enemyBallSpawnRate === 0) {
+				setEnemyBalls(enemyBalls.concat([
+					{
+						radius: enemyBallRadius,
+						coordinates: [getRandomInt(0, window.innerWidth - enemyBallRadius), getRandomInt(0, window.innerHeight - enemyBallRadius)]
+					}
+				]))
+			}
+
 		}, refreshRate);
 		return () => clearInterval(timer);
-	}, [time, refreshRate]);
+	}, [time, refreshRate, pointBalls, pointBallRadius, enemyBalls, enemyBallRadius]);
 
 	return (
 		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0}>
 			<Score score={score} time={time}></Score>
 
-			<PlayerBall radius={playerRadius} coordinates={[playerLeft - playerRadius, playerTop - playerRadius]}></PlayerBall>
+			<PlayerBall radius={playerRadius} coordinates={[playerLeft, playerTop]}></PlayerBall>
 
 			{
 				pointBalls.map(pointBall => <PointsBall radius={pointBall.radius} coordinates={pointBall.coordinates} color={pointBall.color}></PointsBall>)
 			}
 
-			<EnemyBall radius={enemyRadius} coordinates={[enemyLeft - enemyRadius, enemyTop - enemyRadius]}></EnemyBall>
+			{
+				enemyBalls.map(enemyBall => <EnemyBall radius={enemyBall.radius} coordinates={enemyBall.coordinates}></EnemyBall>)
+			}
 		</div>
 	);
 }

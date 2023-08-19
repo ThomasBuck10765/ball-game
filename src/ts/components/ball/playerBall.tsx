@@ -7,6 +7,6 @@ export class PlayerBall extends Ball {
     // }
 
     render() {
-        return <div id='player-ball' className='ball player' style={{left: this.props.coordinates[0], top: this.props.coordinates[1]}}></div>
+        return <div id='player-ball' className='ball player' style={{left: this.props.coordinates[0] - this.props.radius, top: this.props.coordinates[1] - this.props.radius}}></div>
     }
 }
