@@ -3,6 +3,12 @@
     &__back-container {
         position: fixed;
     }
+
+    &__back {
+        background-color: $grey;
+        border-bottom-right-radius: 4px;
+        padding: 4px;
+    }
 }
 
 // Titles

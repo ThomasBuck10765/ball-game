@@ -4,6 +4,7 @@ import { GameSettingsProps } from '../../types/settings/gameSettings';
 import { setToFloatValueOrDefault, setToIntValueOrDefault } from '../../helpers/valueOrDefault';
 import { BallValues } from '../../values/ballValues';
 import { GameValues } from '../../values/gameValues';
+import { AddScroll, RemoveScroll } from '../../helpers/allowScroll';
 
 export default class GameSettings extends Component<GameSettingsProps> {
     
@@ -86,7 +87,7 @@ export default class GameSettings extends Component<GameSettingsProps> {
                     {this.renderIndividualValue(isBallValue, 'Point ball radius (px)', 'pointBallRadius', this.props.ballValues.pointBallRadius)}
                     {this.renderIndividualValue(isBallValue, 'Enemy ball radius (px)', 'enemyBallRadius', this.props.ballValues.enemyBallRadius)}
 
-                    <br />
+                    <tr className='settings-menu__individual-setting __space'></tr>
 
                     {this.renderIndividualValue(isBallValue, 'Player speed', 'playerSpeed', this.props.ballValues.playerSpeed)}
                     {this.renderIndividualValue(isBallValue, 'Point ball speed', 'pointBallSpeed', this.props.ballValues.pointBallSpeed)}
@@ -105,29 +106,37 @@ export default class GameSettings extends Component<GameSettingsProps> {
                 <tbody>
                     {this.renderIndividualValue(isBallValue, 'Refresh rate (ms)', 'refreshRate', this.props.gameValues.refreshRate, true, 8.333333)}
 
-                    <br />
+                    <tr className='settings-menu__individual-setting __space'></tr>
 
                     {this.renderIndividualValue(isBallValue, 'Number of starting lives', 'numberOfStartingLives', this.props.gameValues.numberOfStartingLives)}
 
-                    <br />
+                    <tr className='settings-menu__individual-setting __space'></tr>
 
                     {this.renderIndividualValue(isBallValue, 'Point ball spawn rate (s)', 'pointBallSpawnRate', this.props.gameValues.pointBallSpawnRate)}
                     {this.renderIndividualValue(isBallValue, 'Point ball value', 'pointBallValue', this.props.gameValues.pointBallValue)}
                     {this.renderIndividualBooleanValue(isBallValue, 'Are point balls moving?', 'pointBallsMoving', this.props.gameValues.pointBallsMoving)}
 
-                    <br />
+                    <tr className='settings-menu__individual-setting __space'></tr>
 
                     {this.renderIndividualValue(isBallValue, 'Enemy ball spawn rate (s)', 'enemyBallSpawnRate', this.props.gameValues.enemyBallSpawnRate)}
                     {this.renderIndividualValue(isBallValue, 'Enemy ball spawn timeout (s)', 'enemyBallSpawnTimeout', this.props.gameValues.enemyBallSpawnTimeout)}
                     {this.renderIndividualBooleanValue(isBallValue, 'Are enemy balls moving?', 'enemyBallsMoving', this.props.gameValues.enemyBallsMoving)}
 
-                    <br />
+                    <tr className='settings-menu__individual-setting __space'></tr>
 
                     {this.renderIndividualValue(isBallValue, 'Minimum number of point balls', 'minimumNumberOfPointBalls', this.props.gameValues.minimumNumberOfPointBalls)}
                     {this.renderIndividualValue(isBallValue, 'Maximum number of enemy balls', 'maximumNumberOfEnemyBalls', this.props.gameValues.maximumNumberOfEnemyBalls)}
                 </tbody>
             </table>
         );
+    }
+
+    componentDidMount(): void {
+        AddScroll();
+    }
+
+    componentWillUnmount(): void {
+        RemoveScroll();
     }
 
     render() {

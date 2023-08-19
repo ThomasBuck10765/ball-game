@@ -1,9 +1,17 @@
 import { Component } from 'react';
 import BackButton from '../general/backButton';
 import { AccessibilitySettingsProps } from '../../types/settings/accessibilitySettings';
+import { AddScroll, RemoveScroll } from '../../helpers/allowScroll';
 
 export default class AccessibilitySettings extends Component<AccessibilitySettingsProps> {
-    
+
+    componentDidMount(): void {
+        AddScroll();
+    }
+
+    componentWillUnmount(): void {
+        RemoveScroll();
+    }
 
     render() {
         return (

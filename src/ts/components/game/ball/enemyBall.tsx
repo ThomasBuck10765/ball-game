@@ -40,7 +40,6 @@ export class EnemyBall extends Component<EnemyBallProps> {
     
                     // Phase inversion due to domain of Math.atan (-π/2, π/2)
                     if (Py < y) {
-                        angle = -angle;
                         this.xSpeed = -this.xSpeed;
                         this.ySpeed = -this.ySpeed;
                     }

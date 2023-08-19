@@ -3,3 +3,12 @@ body, input, button {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0px;
 }
+
+body {
+    overflow: hidden;
+    position: relative;
+
+    &.__allow-scroll {
+        overflow-y: scroll;
+    }
+}

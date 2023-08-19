@@ -3,6 +3,7 @@ import BackButton from '../general/backButton';
 import { HighScoresProps } from '../../types/high-scores/highScores';
 import { HighScoreItemProps } from '../../types/high-scores/highScoreItem';
 import base, { authenticate } from '../../firebase/firebase';
+import { AddScroll, RemoveScroll } from '../../helpers/allowScroll';
 
 export default class HighScores extends Component<HighScoresProps> {
 
@@ -24,6 +25,8 @@ export default class HighScores extends Component<HighScoresProps> {
     componentDidMount(): void {
         this.getHighScoresAsync();
 
+        AddScroll();
+
         this.ref = base.syncState('highScoreItems', {
             context: this,
             state: 'highScoreItems'
@@ -32,6 +35,8 @@ export default class HighScores extends Component<HighScoresProps> {
 
     componentWillUnmount(): void {
         base.removeBinding(this.ref);
+        
+        RemoveScroll();
     }
 
     getHighScoresAsync = async () => {

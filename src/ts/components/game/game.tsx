@@ -45,51 +45,49 @@ function Game(stateProps: any) {
 	const enemyBallRadius = ballValues.enemyBallRadius;
 	const [enemyBalls, setEnemyBalls] = useState<EnemyBallType[]>([]);
 
-	// Player movement
+	// Player movement (desktop only)
 	const keyDownEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {    
-		let maxLeft = window.innerWidth - (2 * playerRadius);
-		let maxTop = window.innerHeight - (2 * playerRadius);
-
-		console.log(event.code)
+		let maxLeft = window.innerWidth - playerRadius;
+		let maxTop = window.innerHeight - playerRadius;
 
 		switch(event.code) {
 			case "ArrowRight":
 			case "KeyD":
 			case "Numpad6":
-				if (playerLeft + playerSpeed <= maxLeft + playerRadius) {
-					setPlayerLeft(playerLeft + playerSpeed);
+				if (playerLeft + playerSpeed > maxLeft) {
+					setPlayerLeft(maxLeft);
 				} else {
-					setPlayerLeft(maxLeft + playerRadius);
+					setPlayerLeft(playerLeft + playerSpeed);
 				}
 
 				break;
 			case "ArrowLeft":
 			case "KeyA":
 			case "Numpad4":
-				if (playerLeft - playerSpeed >= playerRadius) {
-					setPlayerLeft(playerLeft - playerSpeed);
-				} else {
+				if (playerLeft - playerSpeed < playerRadius) {
 					setPlayerLeft(playerRadius);
+				} else {
+					setPlayerLeft(playerLeft - playerSpeed);
 				}
 
 				break;
 			case "ArrowUp":
 			case "KeyW":
 			case "Numpad8":
-				if (playerTop - playerSpeed >= playerRadius) {
-					setPlayerTop(playerTop - playerSpeed);
-				} else {
+				if (playerTop - playerSpeed < playerRadius) {
 					setPlayerTop(playerRadius);
+				} else {
+					setPlayerTop(playerTop - playerSpeed);
 				}
 
 				break;
 			case "ArrowDown":
 			case "KeyS":
 			case "Numpad2":
-				if (playerTop + playerSpeed <= maxTop + playerRadius) {
-					setPlayerTop(playerTop + playerSpeed);
+				if (playerTop + playerSpeed > maxTop) {
+					setPlayerTop(maxTop);
 				} else {
-					setPlayerTop(maxTop + playerRadius);
+					setPlayerTop(playerTop + playerSpeed);
 				}
 
 				break;
@@ -101,6 +99,54 @@ function Game(stateProps: any) {
 				break;
 		}
 	};
+
+	// Player movement (mobile only)
+	const clickEvent = (event: React.MouseEvent<HTMLDivElement>) => {
+		// TODO: Refine condition
+		if (window.innerWidth <= 991) {
+			let maxLeft = window.innerWidth - playerRadius;
+			let maxTop = window.innerHeight - playerRadius;
+
+			//playerSpeed
+			// This was borrowed from enemyBall.tsx, TODO: find a way to use common functions
+			let x = playerLeft;
+			let y = playerTop;
+
+			let clickX = event.clientX;
+			let clickY = event.clientY;
+
+			let angle = Math.atan((clickX - x) / (clickY - y));
+
+			let displaceLeft = playerSpeed * Math.sin(angle);
+			let displaceTop = playerSpeed * Math.cos(angle);
+
+			// Phase inversion due to domain of Math.atan (-π/2, π/2)
+			if (clickY < y) {
+				displaceLeft = -displaceLeft;
+				displaceTop = -displaceTop;
+			}
+			
+			if (playerLeft + displaceLeft < playerRadius) {
+				setPlayerLeft(playerRadius);
+			}
+			else if (playerLeft + displaceLeft > maxLeft) {
+				setPlayerLeft(maxLeft);
+			}
+			else {
+				setPlayerLeft(playerLeft + displaceLeft);
+			}
+
+			if (playerTop + displaceTop < playerRadius) {
+				setPlayerTop(playerRadius);
+			}
+			else if (playerTop + displaceTop > maxTop) {
+				setPlayerTop(maxTop);
+			}
+			else {
+				setPlayerTop(playerTop + displaceTop);
+			}
+		}
+	}
 
 	// Detect if point balls touch player ball
 	useEffect(() => {
@@ -189,7 +235,7 @@ function Game(stateProps: any) {
 	}, [time, score, pointBalls, enemyBalls, lives, hasEditedValues, gameValues, ballValues, stateProps]);
 
 	return (
-		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0}>
+		<div className="ball-game" onKeyDown={keyDownEvent} tabIndex={0} onClick={clickEvent}>
 			<BackButton setState={stateProps.setState} baseClass='ball-game' previousState={appStates.GameSelection}></BackButton>
 
 			<GameInfo score={score} time={time} lives={lives} showLives={gameValues.maximumNumberOfEnemyBalls > 0}></GameInfo>

@@ -43,6 +43,11 @@ $base-class: settings-menu;
     
                         &.__number {
                         }
+
+                        &.__space {
+                            display: block;
+                            margin-top: 20px;
+                        }
                     }
     
                     &.__ball {
