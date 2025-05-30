@@ -16,7 +16,6 @@ export class PointsBall extends Ball {
         super(props);
 
         // At random, select either blue or green, if color is not provided
-        // TODO: Fix this temporary work around for using ''
         if (props.color === undefined || props.color === '') {
             this.color = Math.round(Math.random()) ? 'green' : 'blue';
         } else {
