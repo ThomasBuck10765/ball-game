@@ -20,15 +20,15 @@ export default class SetUsername extends Component<SetUsernameProps> {
             })
 
             if (isSwear) {
-                alert('Please use a different username, that is, or contains, a swear.\nNo one is impressed by that.')
+                alert('Please use a different username, that is, or contains, a swear.\nNo one is impressed by that.');
                 return;
             }
 
-            setCookie('username', this.props.username)
-            this.props.setState(appStates.MainMenu)
+            setCookie('username', this.props.username, 7);
+            this.props.setState(appStates.MainMenu);
             return;
         }
-        alert('Please enter a username.')
+        alert('Please enter a username.');
     }
 
     render() {

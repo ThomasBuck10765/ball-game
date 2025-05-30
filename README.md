@@ -26,8 +26,6 @@ You can change the game's settings in the Main Menu to alter how the game works,
 
 ### TODO
 
-- Username
-  - Deletes the username cookie after session ? Likely a https web.config issue
 - Main Menu
   - Menu for different game modes:
     - Survival? (play as a blue/green ball and survive a white ball)
